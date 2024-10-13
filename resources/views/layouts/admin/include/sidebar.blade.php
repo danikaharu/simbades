@@ -94,9 +94,6 @@
             </li>
         @endcan --}}
 
-        @can('update', $user)
-        @endcan
-
         @can('view person')
             <li class="menu-item {{ request()->is('admin/person', 'admin/person/*') ? ' active' : '' }}">
                 <a href="{{ route('admin.person.index') }}" class="menu-link">

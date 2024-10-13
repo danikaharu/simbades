@@ -46,4 +46,9 @@ class Person extends Model
     // {
     //     return $this->belongsTo(Work::class);
     // }
+
+    public function houseCondition()
+    {
+        return $this->hasOne(HouseCondition::class, 'person_id');
+    }
 }

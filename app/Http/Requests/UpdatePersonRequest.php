@@ -36,6 +36,16 @@ class UpdatePersonRequest extends FormRequest
             'last_education' => ['required', 'in:1,2,3,4,5,6,7,8,9'],
             'work' => ['required', 'string', 'max:255'],
             'income_month' => ['required', 'string', 'max:255'],
+
+            // Validasi Kondiri Rumah
+            'building_area' => 'required|string|max:255',
+            'floor_material' => 'required|string|max:255',
+            'wall_material' => 'required|string|max:255',
+            'electricity_source' => 'required|string|max:255',
+            'electricity_capacity' => 'required|string|max:255',
+            'water_source' => 'required|string|max:255',
+            'cooking_fuel' => 'required|string|max:255',
+            'sanitation_facility' => 'required|string|max:255',
         ];
     }
 }

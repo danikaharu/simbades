@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Person;
 use App\Http\Requests\StorePersonRequest;
 use App\Http\Requests\UpdatePersonRequest;
+use App\Models\HouseCondition;
 use App\Models\Village;
 use App\Models\Work;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class PersonController extends Controller implements HasMiddleware
@@ -72,12 +74,31 @@ class PersonController extends Controller implements HasMiddleware
     public function store(StorePersonRequest $request)
     {
         try {
+            DB::beginTransaction();
+
             $attr = $request->validated();
 
-            Person::create($attr);
+            $person = Person::create($attr);
+
+            HouseCondition::create([
+                'person_id' => $person->id,  // Menghubungkan dengan ID dari person yang baru dibuat
+                'house_type' => $request->house_type,
+                'building_area' => $request->building_area,
+                'floor_material' => $request->floor_material,
+                'wall_material' => $request->wall_material,
+                'electricity_source' => $request->electricity_source,
+                'electricity_capacity' => $request->electricity_capacity,
+                'water_source' => $request->water_source,
+                'cooking_fuel' => $request->cooking_fuel,
+                'sanitation_facility' => $request->sanitation_facility,
+            ]);
+
+            DB::commit();
 
             return redirect()->route('admin.person.index')->with('success', 'Data berhasil ditambah');
         } catch (\Throwable $th) {
+            DB::rollBack();
+
             return redirect()->route('admin.person.index')->with('error', $th->getMessage());
         }
     }
@@ -106,14 +127,32 @@ class PersonController extends Controller implements HasMiddleware
     public function update(UpdatePersonRequest $request, Person $person)
     {
         try {
+            DB::beginTransaction();
+
             $attr = $request->validated();
 
             $person->update($attr);
+
+            $houseCondition = HouseCondition::where('person_id', $person->id)->first();
+
+            $houseCondition->update([
+                'building_area' => $request->building_area,
+                'floor_material' => $request->floor_material,
+                'wall_material' => $request->wall_material,
+                'electricity_source' => $request->electricity_source,
+                'electricity_capacity' => $request->electricity_capacity,
+                'water_source' => $request->water_source,
+                'cooking_fuel' => $request->cooking_fuel,
+                'sanitation_facility' => $request->sanitation_facility,
+            ]);
+
+            DB::commit();
 
             return redirect()
                 ->route('admin.person.index')
                 ->with('success', __('Data Berhasil Diubah'));
         } catch (\Throwable $th) {
+            DB::rollBack();
             return redirect()
                 ->route('admin.person.index')
                 ->with('error', __($th->getMessage()));
@@ -127,12 +166,25 @@ class PersonController extends Controller implements HasMiddleware
     {
         try {
 
+            // Mulai transaksi
+            DB::beginTransaction();
+
+            // Hapus data di tabel HouseCondition terlebih dahulu
+            $houseCondition = HouseCondition::where('person_id', $person->id)->first();
+
+            if ($houseCondition) {
+                $houseCondition->delete();
+            }
+
             $person->delete();
+
+            DB::commit();
 
             return redirect()
                 ->route('admin.person.index')
                 ->with('success', __('Data Berhasil Dihapus'));
         } catch (\Throwable $th) {
+            DB::rollBack();
             return redirect()
                 ->route('admin.person.index')
                 ->with('error', __($th->getMessage()));
