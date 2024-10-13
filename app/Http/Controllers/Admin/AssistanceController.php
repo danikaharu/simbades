@@ -59,7 +59,11 @@ class AssistanceController extends Controller implements HasMiddleware
         try {
             $attr = $request->validated();
 
-            Assistance::create($attr);
+            Assistance::create([
+                'name' => $attr['name'],
+                'type' => $attr['type'],
+                'additional_data' => json_encode($attr['additional_data']),
+            ]);
 
             return redirect()->route('admin.assistance.index')->with('success', 'Data berhasil ditambah');
         } catch (\Throwable $th) {
@@ -91,7 +95,11 @@ class AssistanceController extends Controller implements HasMiddleware
         try {
             $attr = $request->validated();
 
-            $assistance->update($attr);
+            $assistance->update([
+                'name' => $attr['name'],
+                'type' => $attr['type'], // Update tipe bantuan
+                'additional_data' => json_encode($attr['additional_data']), // Update data tambahan sebagai JSON
+            ]);
 
             return redirect()
                 ->route('admin.assistance.index')

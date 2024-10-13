@@ -9,7 +9,7 @@ class Assistance extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'type'];
+    protected $fillable = ['name', 'type', 'additional_data'];
 
     public function recipient()
     {

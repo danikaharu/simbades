@@ -22,8 +22,13 @@ class UpdateAssistanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'in:1,2'],
+            'name' => 'required|string|max:255',
+            'type' => 'required|in:1,2',
+            'additional_data.nominal' => 'required_if:type,1',
+            'additional_data.nama_barang' => 'required_if:type,2|array',
+            'additional_data.nama_barang.*' => 'required_if:type,2', // Validasi untuk setiap nama barang
+            'additional_data.jumlah_barang' => 'required_if:type,2|array',
+            'additional_data.jumlah_barang.*' => 'required_if:type,2', // Validasi untuk setiap jumlah barang
         ];
     }
 }
