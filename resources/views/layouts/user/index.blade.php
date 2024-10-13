@@ -31,6 +31,8 @@
 
 <body>
     @yield('content')
+
+    @include('layouts.user.include.footer')
 </body>
 
 </html>

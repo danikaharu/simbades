@@ -13,6 +13,10 @@
                <div class="d-flex mx-auto flex-column flex-lg-row align-items-center">
                </div>
                <div class="quote_btn-container">
+                   <a href="{{ route('user.dashboard') }}">
+                       <span>Beranda</span>
+                       <i class="fa fa-home" aria-hidden="true"></i>
+                   </a>
                    <a href="{{ route('login') }}">
                        <span>Login</span>
                        <i class="fa fa-user" aria-hidden="true"></i>

@@ -73,18 +73,35 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Pencarian Lebih Lengkap</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                <form action="{{ route('user.search') }}" method="GET">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="">Nama *</label>
+                                <input type="text" name="name" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">Tipe Bantuan *</label>
+                                <select name="assistance_id" class="form-control">
+                                    <option disabled selected>-- Pilih Tipe Bantuan --</option>
+                                    @foreach ($asisstances as $assistance)
+                                        <option value="{{ $assistance->id }}">{{ $assistance->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Terapkan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

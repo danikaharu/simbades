@@ -51,4 +51,9 @@ class Person extends Model
     {
         return $this->hasOne(HouseCondition::class, 'person_id');
     }
+
+    public function recipients()
+    {
+        return $this->hasMany(Recipient::class, 'person_id');
+    }
 }
