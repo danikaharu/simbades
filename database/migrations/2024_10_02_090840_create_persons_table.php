@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('father_name');
             $table->string('mother_name');
             $table->tinyInteger('last_education');
-            $table->tinyInteger('main_job');
+            $table->string('work');
             $table->string('income_month');
             $table->timestamps();
         });

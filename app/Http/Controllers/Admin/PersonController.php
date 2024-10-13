@@ -45,9 +45,9 @@ class PersonController extends Controller implements HasMiddleware
                 ->addColumn('village', function ($row) {
                     return $row->village ? $row->village->name : '-';
                 })
-                ->addColumn('work', function ($row) {
-                    return $row->work ? $row->work->name : '-';
-                })
+                // ->addColumn('work', function ($row) {
+                //     return $row->work ? $row->work->name : '-';
+                // })
                 ->addColumn('action', 'admin.person.include.action')
                 ->rawColumns(['action'])
                 ->make(true);
@@ -62,8 +62,8 @@ class PersonController extends Controller implements HasMiddleware
     public function create()
     {
         $villages = Village::latest()->get();
-        $works = Work::latest()->get();
-        return view('admin.person.create', compact('villages', 'works'));
+        // $works = Work::latest()->get();
+        return view('admin.person.create', compact('villages'));
     }
 
     /**
@@ -96,8 +96,8 @@ class PersonController extends Controller implements HasMiddleware
     public function edit(Person $person)
     {
         $villages = Village::latest()->get();
-        $works = Work::latest()->get();
-        return view('admin.person.edit', compact('person', 'villages', 'works'));
+        // $works = Work::latest()->get();
+        return view('admin.person.edit', compact('person', 'villages'));
     }
 
     /**

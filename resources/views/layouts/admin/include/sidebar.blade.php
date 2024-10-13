@@ -84,7 +84,7 @@
                 </a>
             </li>
         @endcan
-
+        {{-- 
         @can('view work')
             <li class="menu-item {{ request()->is('admin/work', 'admin/work/*') ? ' active' : '' }}">
                 <a href="{{ route('admin.work.index') }}" class="menu-link">
@@ -92,14 +92,19 @@
                     <div class="text-truncate">Pekerjaan</div>
                 </a>
             </li>
+        @endcan --}}
+
+        @can('update', $user)
         @endcan
 
-        <li class="menu-item {{ request()->is('admin/person', 'admin/person/*') ? ' active' : '' }}">
-            <a href="{{ route('admin.person.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bxs-user-pin"></i>
-                <div class="text-truncate">Masyarakat</div>
-            </a>
-        </li>
+        @can('view person')
+            <li class="menu-item {{ request()->is('admin/person', 'admin/person/*') ? ' active' : '' }}">
+                <a href="{{ route('admin.person.index') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bxs-user-pin"></i>
+                    <div class="text-truncate">Masyarakat</div>
+                </a>
+            </li>
+        @endcan
 
         @can('view recipient')
             <li class="menu-item {{ request()->is('admin/recipient', 'admin/recipient/*') ? ' active' : '' }}">

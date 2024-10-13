@@ -49,7 +49,7 @@ class PersonExport implements FromCollection, WithHeadings, WithMapping, ShouldA
             $person->birth_date,
             $person->religion,
             $person->last_education,
-            $person->work->name,
+            $person->work,
             $person->income_month,
             $person->village->name,
         ];

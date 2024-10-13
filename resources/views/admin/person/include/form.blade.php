@@ -229,7 +229,7 @@
     </div>
     <div class="col-md-6 mb-6">
         <label class="form-label" for="basic-default-fullname">Pekerjaan Utama</label>
-        <select name="work_id" id="" class="form-select @error('work_id')
+        {{-- <select name="work_id" id="" class="form-select @error('work_id')
     invalid
 @enderror">
             <option disabled selected>-- Pilih Pekerjaan Utama --</option>
@@ -240,6 +240,15 @@
             @endforeach
         </select>
         @error('work_id')
+            <div class="small text-danger">
+                {{ $message }}
+            </div>
+        @enderror --}}
+        <input type="text" name="work" class="form-control @error('work')
+        invalid
+    @enderror"
+            value="{{ isset($person) ? $person->work : old('work') }}">
+        @error('work')
             <div class="small text-danger">
                 {{ $message }}
             </div>

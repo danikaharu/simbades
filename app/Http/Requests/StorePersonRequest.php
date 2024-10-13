@@ -34,7 +34,7 @@ class StorePersonRequest extends FormRequest
             'father_name' => ['required', 'string', 'max:255'],
             'mother_name' => ['required', 'string', 'max:255'],
             'last_education' => ['required', 'in:1,2,3,4,5,6,7,8,9'],
-            'work_id' => ['required', 'exists:works,id'],
+            'work' => ['required', 'string', 'max:255'],
             'income_month' => ['required', 'string', 'max:255'],
         ];
     }

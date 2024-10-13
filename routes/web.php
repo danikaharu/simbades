@@ -17,7 +17,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::resource('assistance', App\Http\Controllers\Admin\AssistanceController::class);
 
     // Work
-    Route::resource('work', App\Http\Controllers\Admin\WorkController::class);
+    // Route::resource('work', App\Http\Controllers\Admin\WorkController::class);
 
     // Person
     Route::resource('person', App\Http\Controllers\Admin\PersonController::class);

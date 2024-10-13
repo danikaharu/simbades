@@ -24,7 +24,7 @@ class Person extends Model
         'father_name',
         'mother_name',
         'last_education',
-        'work_id',
+        'work',
         'income_month'
     ];
 
@@ -42,8 +42,8 @@ class Person extends Model
         return $this->belongsTo(Village::class);
     }
 
-    public function work()
-    {
-        return $this->belongsTo(Work::class);
-    }
+    // public function work()
+    // {
+    //     return $this->belongsTo(Work::class);
+    // }
 }
