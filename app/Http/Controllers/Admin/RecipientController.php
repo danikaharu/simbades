@@ -17,6 +17,7 @@ use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -42,6 +43,19 @@ class RecipientController extends Controller implements HasMiddleware
      */
     public function index()
     {
+        $userInfo = Person::where('identification_number', Auth::user()->username)->first();
+
+        $recipientQUery = Recipient::query();
+
+        if (Auth::user()->roles->first()->id == 1) {
+            $recipients = $recipientQUery->with('person')->latest()->get();
+        } else {
+            $recipients =  Recipient::with('person')
+                ->whereHas('person', function ($query) use ($userInfo) {
+                    $query->where('identification_number', $userInfo->username);
+                })->latest()->get();
+        }
+
         if (request()->ajax()) {
             $recipients = Recipient::with('person')->latest()->get();
             return DataTables::of($recipients)

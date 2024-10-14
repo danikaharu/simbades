@@ -112,10 +112,10 @@
             </li>
         @endcan
 
-        <!-- Pengaturan -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Pengaturan</span></li>
-
         @can('view profile')
+            <!-- Pengaturan -->
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Pengaturan</span></li>
+
             <li class="menu-item {{ request()->is('admin/profile') ? ' active' : '' }}">
                 <a href="{{ route('admin.profile.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-globe"></i>

@@ -8,11 +8,13 @@ use App\Models\Person;
 use App\Http\Requests\StorePersonRequest;
 use App\Http\Requests\UpdatePersonRequest;
 use App\Models\HouseCondition;
+use App\Models\User;
 use App\Models\Village;
 use App\Models\Work;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 
 class PersonController extends Controller implements HasMiddleware
@@ -81,7 +83,7 @@ class PersonController extends Controller implements HasMiddleware
             $person = Person::create($attr);
 
             HouseCondition::create([
-                'person_id' => $person->id,  // Menghubungkan dengan ID dari person yang baru dibuat
+                'person_id' => $person->id,
                 'house_type' => $request->house_type,
                 'building_area' => $request->building_area,
                 'floor_material' => $request->floor_material,
@@ -92,6 +94,15 @@ class PersonController extends Controller implements HasMiddleware
                 'cooking_fuel' => $request->cooking_fuel,
                 'sanitation_facility' => $request->sanitation_facility,
             ]);
+
+            $user = User::create([
+                'name' => $person->name,
+                'username' => $person->identification_number,
+                'email' => 'masyarakat@gmail.com',
+                'password' => Hash::make(123456)
+            ]);
+
+            $user->assignRole(2);
 
             DB::commit();
 

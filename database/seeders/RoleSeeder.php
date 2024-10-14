@@ -17,6 +17,7 @@ class RoleSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         $roleSuperAdmin = Role::create(['name' => 'Super Admin']);
+        $roleMasyarakat = Role::create(['name' => 'Masyarakat']);
 
         foreach (config('permission.list_permissions') as $permission) {
             foreach ($permission['lists'] as $list) {
