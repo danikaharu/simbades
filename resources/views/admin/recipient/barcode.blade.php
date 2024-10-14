@@ -85,27 +85,36 @@
 <body>
     <div class="container">
         <div class="nav-tabs">
-            <button id="btn-tampil" class="active" onclick="toggleTabs('tampil')">Tampil QR Code</button>
-            <button id="btn-scan" onclick="toggleTabs('scan')">Scan QR Code</button>
+            @can('barcode recipient')
+                <button id="btn-tampil" class="active" onclick="toggleTabs('tampil')">Tampil QR Code</button>
+            @endcan
+
+            @can('verification recipient')
+                <button id="btn-scan" onclick="toggleTabs('scan')">Scan QR Code</button>
+            @endcan
         </div>
 
-        <!-- Tampil QR Code Content -->
-        <div id="tab-tampil" class="tab-content active">
-            <h1>Tampil QR Code</h1>
-            <div id="qr-code">
-                <img src="{{ $qrCodeDataUri }}" alt="QR Code" style="max-width: 100%; height: auto;">
-                <!-- Menjaga proporsi gambar -->
+        @can('barcode recipient')
+            <!-- Tampil QR Code Content -->
+            <div id="tab-tampil" class="tab-content active">
+                <h1>Tampil QR Code</h1>
+                <div id="qr-code">
+                    <img src="{{ $qrCodeDataUri }}" alt="QR Code" style="max-width: 100%; height: auto;">
+                    <!-- Menjaga proporsi gambar -->
+                </div>
+                <p>Kode berlaku selama:</p>
+                <p id="countdown" style="font-size: 1.2em; font-weight: bold;"></p>
             </div>
-            <p>Kode berlaku selama:</p>
-            <p id="countdown" style="font-size: 1.2em; font-weight: bold;"></p>
-        </div>
+        @endcan
 
-        <!-- Scan QR Code Content -->
-        <div id="tab-scan" class="tab-content">
-            <h1>Scan QR Code</h1>
-            <div id="reader"></div>
-            <div id="result"></div>
-        </div>
+        @can('verification recipient')
+            <!-- Scan QR Code Content -->
+            <div id="tab-scan" class="tab-content">
+                <h1>Scan QR Code</h1>
+                <div id="reader"></div>
+                <div id="result"></div>
+            </div>
+        @endcan
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

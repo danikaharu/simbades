@@ -26,12 +26,13 @@
         <div class="card">
             <div class="card-header">
                 <h5>Data Dusun</h5>
-                <div class="flex">
-                    <a class="btn btn-primary" href="{{ route('admin.village.create') }}"><i
-                            class="bx bx-plus me-1"></i>Tambah
-                        Dusun</a>
-                </div>
-
+                @can('create village')
+                    <div class="flex">
+                        <a class="btn btn-primary" href="{{ route('admin.village.create') }}"><i
+                                class="bx bx-plus me-1"></i>Tambah
+                            Dusun</a>
+                    </div>
+                @endcan
             </div>
             <div class="table-responsive text-nowrap">
                 <table class="table" id="listData">

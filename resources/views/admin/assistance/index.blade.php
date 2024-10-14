@@ -26,11 +26,13 @@
         <div class="card">
             <div class="card-header">
                 <h5>Data Bantuan</h5>
-                <div class="flex">
-                    <a class="btn btn-primary" href="{{ route('admin.assistance.create') }}"><i
-                            class="bx bx-plus me-1"></i>Tambah
-                        Bantuan</a>
-                </div>
+                @can('create assistance')
+                    <div class="flex">
+                        <a class="btn btn-primary" href="{{ route('admin.assistance.create') }}"><i
+                                class="bx bx-plus me-1"></i>Tambah
+                            Bantuan</a>
+                    </div>
+                @endcan
 
             </div>
             <div class="table-responsive text-nowrap">

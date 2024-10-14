@@ -26,24 +26,30 @@
         <div class="card">
             <div class="card-header">
                 <h5>Data Masyarakat</h5>
-                <div class="btn-group">
-                    <a class="btn btn-primary" href="{{ route('admin.person.create') }}"><i
-                            class="bx bx-plus me-1"></i>Tambah
-                        Masyarakat</a>
-                </div>
-                <div class="btn-group">
-                    <div class="dropdown">
-                        <button class="btn btn-info me-2 dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false"><i class="bx bxs-printer me-1"></i>
-                            Cetak Data
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('admin.export.all') }}">Semua Masyarakat</a></li>
-                            <li><a class="dropdown-item" href="{{ route('admin.export.low_income') }}">Masyarakat Kurang
-                                    Mampu</a></li>
-                        </ul>
+                @can('create person')
+                    <div class="btn-group">
+                        <a class="btn btn-primary" href="{{ route('admin.person.create') }}"><i
+                                class="bx bx-plus me-1"></i>Tambah
+                            Masyarakat</a>
                     </div>
-                </div>
+                @endcan
+
+                @can('export person')
+                    <div class="btn-group">
+                        <div class="dropdown">
+                            <button class="btn btn-info me-2 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false"><i class="bx bxs-printer me-1"></i>
+                                Cetak Data
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('admin.export.all') }}">Semua Masyarakat</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.export.low_income') }}">Masyarakat Kurang
+                                        Mampu</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                @endcan
+
             </div>
             <div class="table-responsive text-nowrap">
                 <table class="table" id="listData">
