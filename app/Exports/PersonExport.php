@@ -9,11 +9,13 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class PersonExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithEvents, WithCustomStartCell
+class PersonExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithEvents, WithCustomStartCell, WithColumnFormatting
 {
     use Exportable;
 
@@ -29,9 +31,10 @@ class PersonExport implements FromCollection, WithHeadings, WithMapping, ShouldA
     public function collection()
     {
         if ($this->lowIncome) {
-            return Person::where('income_month', '<=', '500000')->get();
+            return Person::where('income_month', '<=', 500000)->get();
+        } else {
+            return Person::latest()->get();
         }
-        return Person::latest()->get();
     }
 
     /**
@@ -44,14 +47,22 @@ class PersonExport implements FromCollection, WithHeadings, WithMapping, ShouldA
             $person->identification_number,
             $person->name,
             $person->gender(),
-            $person->kinship,
+            $person->kinship(),
             $person->birth_place,
             $person->birth_date,
-            $person->religion,
-            $person->last_education,
+            $person->religion(),
+            $person->last_education(),
             $person->work,
-            $person->income_month,
+            'Rp ' . number_format($person->income_month, 0, ',', '.'),
             $person->village->name,
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'A' => NumberFormat::FORMAT_NUMBER,
+            'B' => NumberFormat::FORMAT_NUMBER,
         ];
     }
 

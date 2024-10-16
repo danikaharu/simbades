@@ -83,7 +83,7 @@ class AssistanceSheetExport implements FromCollection, WithTitle, WithMapping, W
 
                 // Menambahkan teks kop surat
                 $event->sheet->setCellValue('A1', 'DAFTAR PENERIMA');
-                $event->sheet->setCellValue('A2', 'DESA TAHUN');
+                $event->sheet->setCellValue('A2', 'DESA TAHUN ' . $this->year);
 
                 // Styling kop surat agar teks berada di tengah
                 $event->sheet->getStyle('A1:D2')->applyFromArray([
@@ -112,6 +112,31 @@ class AssistanceSheetExport implements FromCollection, WithTitle, WithMapping, W
 
                 $range = 'A4:' . $highestColumn . $highestRow;
                 $event->sheet->getStyle($range)->applyFromArray($styleArray);
+
+                // Menambahkan teks tanda tangan di bawah data
+                $signatureRow = $highestRow + 3; // Posisi baris tanda tangan
+                $event->sheet->setCellValue('B' . $signatureRow, 'Mengetahui');
+                $event->sheet->setCellValue('D' . $signatureRow, 'Pantungo, ' . now()->format('j F Y'));
+
+                $event->sheet->setCellValue('B' . ($signatureRow + 1), 'Kepala Desa Pantungo');
+                $event->sheet->setCellValue('D' . ($signatureRow + 1), 'Pelaksana Kegiatan');
+
+                // Baris untuk nama dan jabatan setelah tanda tangan
+                $event->sheet->setCellValue('B' . ($signatureRow + 5), 'SOFYAN GANI, SE');
+                $event->sheet->setCellValue('D' . ($signatureRow + 5), 'IDRIS K. MOHAMAD, S.KOM');
+
+                // Mengatur posisi dan style tanda tangan
+                $event->sheet->getStyle('B' . $signatureRow . ':D' . ($signatureRow + 5))->applyFromArray([
+                    'font' => ['bold' => true],
+                    'alignment' => [
+                        'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    ],
+                ]);
+
+                // Bold nama
+                $event->sheet->getStyle('B' . ($signatureRow + 5) . ':D' . ($signatureRow + 5))->applyFromArray([
+                    'font' => ['bold' => true, 'size' => 12],
+                ]);
             },
         ];
     }
