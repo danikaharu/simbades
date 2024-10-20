@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\QrCodeScanned;
 use App\Exports\RecipientExport;
 use App\Http\Controllers\Controller;
 use App\Models\Recipient;
@@ -18,9 +19,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Yajra\DataTables\Facades\DataTables;
 
 class RecipientController extends Controller implements HasMiddleware
@@ -33,8 +33,8 @@ class RecipientController extends Controller implements HasMiddleware
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('create recipient'), only: ['create', 'store']),
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('delete recipient'), only: ['destroy']),
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('export recipient'), only: ['export']),
-            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('barcode recipient'), only: ['download', 'refreshQrCode']),
-            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('verification recipient'), only: ['verificationQrCode']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('barcode recipient'), only: ['showBarcodePage']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('verification recipient'), only: ['showScanPage', 'verificationQrCode']),
         ];
     }
 
@@ -52,12 +52,11 @@ class RecipientController extends Controller implements HasMiddleware
         } else {
             $recipients =  Recipient::with('person')
                 ->whereHas('person', function ($query) use ($userInfo) {
-                    $query->where('identification_number', $userInfo->username);
+                    $query->where('identification_number', $userInfo->identification_number);
                 })->latest()->get();
         }
 
         if (request()->ajax()) {
-            $recipients = Recipient::with('person')->latest()->get();
             return DataTables::of($recipients)
                 ->addIndexColumn()
                 ->addColumn('person', function ($row) {
@@ -146,7 +145,7 @@ class RecipientController extends Controller implements HasMiddleware
         }
     }
 
-    public function download(Recipient $recipient)
+    public function showBarcodePage(Recipient $recipient)
     {
         $expiration = Carbon::now()->addMinute(5);
 
@@ -174,6 +173,11 @@ class RecipientController extends Controller implements HasMiddleware
         return view('admin.recipient.barcode', compact('recipient', 'qrCodeDataUri', 'expiration'));
     }
 
+    public function showScanPage()
+    {
+        return view('admin.recipient.scan');
+    }
+
     public function verificationQrCode(Request $request)
     {
         // Validasi data input
@@ -181,45 +185,34 @@ class RecipientController extends Controller implements HasMiddleware
             'code' => 'required|string',
         ]);
 
-        // Cari recipient berdasarkan kode atau sesuai dengan logika Anda
-        $recipient = Recipient::where('qr_data', 'like', '%' . $attr['code'] . '%')->first();
+        // Cari recipient berdasarkan kode
+        $recipient = Recipient::where('qr_data', $attr['code'])->first();
 
-        if ($recipient) {
-            // Decode data QR code untuk memeriksa waktu kadaluwarsa
-            $qrData = json_decode($recipient->qr_data, true); // Mengambil data QR
-            $expirationTime = Carbon::parse($qrData['waktu kadaluarsa']); // Waktu kadaluarsa dari data QR
-
-            // Cek kadaluarsa
-            if (Carbon::now()->greaterThan($expirationTime)) {
-                return response()->json(['status' => 'error', 'message' => 'QR Code sudah kadaluwarsa.'], 403);
-            }
-
-            // Cek status QR code
-            if ($recipient->status == 1) {
-                return response()->json(['status' => 'scanned', 'message' => 'QR Code sudah dipindai sebelumnya.']);
-            }
-
-            $recipient->status = 1;
-            $recipient->save();
-
-            return response()->json(['status' => 'success', 'message' => 'QR Code berhasil dipindai!']);
-        } else {
+        if (!$recipient) {
             return response()->json(['status' => 'error', 'message' => 'QR Code tidak ditemukan.'], 404);
         }
-    }
 
-    public function checkQrCodeStatus(Request $request)
-    {
-        // Cek status QR code di database
-        $recipient = Recipient::where('qr_data', 'like', '%' . $request->input('code') . '%')->first();
+        // Decode data QR code untuk memeriksa waktu kadaluwarsa
+        $qrData = json_decode($recipient->qr_data, true);
+        $expirationTime = Carbon::parse($qrData['waktu kadaluarsa']);
 
-        if ($recipient) {
-            if ($recipient->status == 1) {
-                return response()->json(['status' => 'scanned', 'redirect' => route('admin.recipient.index')]);
-            }
+        // Cek kadaluarsa
+        if (Carbon::now()->greaterThan($expirationTime)) {
+            return response()->json(['status' => 'error', 'message' => 'QR Code sudah kadaluarsa.'], 400);
         }
 
-        return response()->json(['status' => 'not scanned']);
+        // Update status jika QR Code valid
+        $recipient->status = 1;
+        $recipient->save();
+
+        event(new QrCodeScanned($recipient->id));
+        return response()->json(['status' => 'success', 'message' => 'QR Code berhasil diverifikasi.'], 200);
+    }
+
+    public function scanned(Request $request)
+    {
+        broadcast(new QrCodeScanned($request->code));
+        return response()->json(['status' => 'success']);
     }
 
     public function export(Request $request)
