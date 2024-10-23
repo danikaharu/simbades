@@ -29,7 +29,7 @@
                 @can('create person')
                     <div class="btn-group">
                         <a class="btn btn-primary" href="{{ route('admin.person.create') }}"><i
-                                class="bx bx-plus me-1"></i>Tambah
+                                class="bx bx-plus me-1"></i>Input Data
                             Masyarakat</a>
                     </div>
                 @endcan
