@@ -29,7 +29,7 @@
                 @can('create recipient')
                     <div class="btn-group">
                         <a class="btn btn-primary" href="{{ route('admin.recipient.create') }}"><i
-                                class="bx bx-plus me-1"></i>Tambah
+                                class="bx bx-plus me-1"></i>Input Data
                             Penerimaan Bantuan</a>
                     </div>
                 @endcan

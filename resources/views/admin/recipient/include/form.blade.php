@@ -1,14 +1,19 @@
+@push('style')
+    <link rel="stylesheet" href="{{ asset('template_admin/vendor/libs/select2/select2.css') }}">
+@endpush
+
 <div class="row">
     <div class="col-md-12 mb-6">
         <label class="form-label" for="basic-default-fullname">Masyarakat</label>
-        <select name="person_id" class="form-select @error('person_id')
+        <select name="person_id" class="select2 form-select @error('person_id')
         invalid
-    @enderror">
-            <option disabled selected>-- Pilih Masyarakat --</option>
+    @enderror"
+            data-allow-clear="true">
+            <option value=""></option>
             @foreach ($persons as $person)
                 <option value="{{ $person->id }}"
                     {{ isset($recipient) && $recipient->person_id == $person->id ? 'selected' : (old('person_id') == $person->id ? 'selected' : '') }}>
-                    {{ $person->name }}</option>
+                    {{ $person->identification_number }} - {{ $person->name }}</option>
             @endforeach
         </select>
         @error('person_id')
@@ -58,3 +63,15 @@
         @enderror
     </div>
 </div>
+
+@push('script')
+    <script src="{{ asset('template_admin/vendor/libs/select2/select2.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $(".select2").select2({
+                placeholder: "-- Pilih Penerima Bantuan --",
+                allowClear: true
+            });
+        });
+    </script>
+@endpush

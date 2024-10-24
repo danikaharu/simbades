@@ -26,6 +26,46 @@
          @enderror
      </div>
      <div class="col-md-6 mb-6">
+         <label class="form-label" for="basic-default-fullname">Pekerjaan Utama</label>
+         {{-- <select name="work_id" id="" class="form-select @error('work_id')
+   invalid
+@enderror">
+           <option disabled selected>-- Pilih Pekerjaan Utama --</option>
+           @foreach ($works as $work)
+               <option value="{{ $work->id }}"
+                   {{ isset($person) && $person->work_id == $work->id ? 'selected' : (old('work_id') == $work->id ? 'selected' : '') }}>
+                   {{ $work->name }}</option>
+           @endforeach
+       </select>
+       @error('work_id')
+           <div class="small text-danger">
+               {{ $message }}
+           </div>
+       @enderror --}}
+         <input type="text" name="work" class="form-control @error('work')
+       invalid
+   @enderror"
+             value="{{ isset($person) ? $person->work : old('work') }}">
+         @error('work')
+             <div class="small text-danger">
+                 {{ $message }}
+             </div>
+         @enderror
+     </div>
+     <div class="col-md-6 mb-6">
+         <label class="form-label" for="basic-default-fullname">Penghasilan Per Bulan</label>
+         <input type="text" name="income_month"
+             class="form-control @error('income_month')
+           invalid
+       @enderror"
+             value="{{ isset($person) ? $person->income_month : old('income_month') }}">
+         @error('income_month')
+             <div class="small text-danger">
+                 {{ $message }}
+             </div>
+         @enderror
+     </div>
+     <div class="col-md-6 mb-6">
          <label class="form-label" for="basic-default-fullname">Nama</label>
          <input type="text" name="name" class="form-control @error('name')
             invalid
@@ -38,19 +78,18 @@
          @enderror
      </div>
      <div class="col-md-6 mb-6">
-         <label class="form-label" for="basic-default-fullname">Jenis Kelamin</label>
-         <select name="gender" id="" class="form-select @error('gender')
-        invalid
-    @enderror">
-             <option disabled selected>-- Pilih Jenis Kelamin --</option>
-             <option value="1"
-                 {{ isset($person) && $person->gender == 1 ? 'selected' : (old('gender') == '1' ? 'selected' : '') }}>
-                 Laki - Laki</option>
-             <option value="2"
-                 {{ isset($person) && $person->gender == 2 ? 'selected' : (old('gender') == '2' ? 'selected' : '') }}>
-                 Perempuan</option>
+         <label class="form-label" for="basic-default-fullname">Dusun</label>
+         <select name="village_id" id="" class="form-select @error('village_id')
+       invalid
+   @enderror">
+             <option disabled selected>-- Pilih Dusun --</option>
+             @foreach ($villages as $village)
+                 <option value="{{ $village->id }}"
+                     {{ isset($person) && $person->village_id == $village->id ? 'selected' : (old('village_id') == $village->id ? 'selected' : '') }}>
+                     {{ $village->name }}</option>
+             @endforeach
          </select>
-         @error('gender')
+         @error('village_id')
              <div class="small text-danger">
                  {{ $message }}
              </div>
@@ -182,7 +221,8 @@
      </div>
      <div class="col-md-6 mb-6">
          <label class="form-label" for="basic-default-fullname">Agama</label>
-         <select name="religion" id="" class="form-select @error('religion')
+         <select name="religion" id=""
+             class="form-select @error('religion')
         invalid
     @enderror">
              <option disabled selected>-- Pilih Agama --</option>
@@ -209,59 +249,19 @@
          @enderror
      </div>
      <div class="col-md-6 mb-6">
-         <label class="form-label" for="basic-default-fullname">Dusun</label>
-         <select name="village_id" id=""
-             class="form-select @error('village_id')
-        invalid
-    @enderror">
-             <option disabled selected>-- Pilih Dusun --</option>
-             @foreach ($villages as $village)
-                 <option value="{{ $village->id }}"
-                     {{ isset($person) && $person->village_id == $village->id ? 'selected' : (old('village_id') == $village->id ? 'selected' : '') }}>
-                     {{ $village->name }}</option>
-             @endforeach
+         <label class="form-label" for="basic-default-fullname">Jenis Kelamin</label>
+         <select name="gender" id="" class="form-select @error('gender')
+       invalid
+   @enderror">
+             <option disabled selected>-- Pilih Jenis Kelamin --</option>
+             <option value="1"
+                 {{ isset($person) && $person->gender == 1 ? 'selected' : (old('gender') == '1' ? 'selected' : '') }}>
+                 Laki - Laki</option>
+             <option value="2"
+                 {{ isset($person) && $person->gender == 2 ? 'selected' : (old('gender') == '2' ? 'selected' : '') }}>
+                 Perempuan</option>
          </select>
-         @error('village_id')
-             <div class="small text-danger">
-                 {{ $message }}
-             </div>
-         @enderror
-     </div>
-     <div class="col-md-6 mb-6">
-         <label class="form-label" for="basic-default-fullname">Pekerjaan Utama</label>
-         {{-- <select name="work_id" id="" class="form-select @error('work_id')
-    invalid
-@enderror">
-            <option disabled selected>-- Pilih Pekerjaan Utama --</option>
-            @foreach ($works as $work)
-                <option value="{{ $work->id }}"
-                    {{ isset($person) && $person->work_id == $work->id ? 'selected' : (old('work_id') == $work->id ? 'selected' : '') }}>
-                    {{ $work->name }}</option>
-            @endforeach
-        </select>
-        @error('work_id')
-            <div class="small text-danger">
-                {{ $message }}
-            </div>
-        @enderror --}}
-         <input type="text" name="work" class="form-control @error('work')
-        invalid
-    @enderror"
-             value="{{ isset($person) ? $person->work : old('work') }}">
-         @error('work')
-             <div class="small text-danger">
-                 {{ $message }}
-             </div>
-         @enderror
-     </div>
-     <div class="col-md-6 mb-6">
-         <label class="form-label" for="basic-default-fullname">Penghasilan Per Bulan</label>
-         <input type="text" name="income_month"
-             class="form-control @error('income_month')
-            invalid
-        @enderror"
-             value="{{ isset($person) ? $person->income_month : old('income_month') }}">
-         @error('income_month')
+         @error('gender')
              <div class="small text-danger">
                  {{ $message }}
              </div>

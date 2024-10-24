@@ -29,7 +29,7 @@
                 @can('create village')
                     <div class="flex">
                         <a class="btn btn-primary" href="{{ route('admin.village.create') }}"><i
-                                class="bx bx-plus me-1"></i>Tambah
+                                class="bx bx-plus me-1"></i>Input Data
                             Dusun</a>
                     </div>
                 @endcan
