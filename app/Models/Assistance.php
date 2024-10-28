@@ -9,19 +9,10 @@ class Assistance extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'type', 'additional_data'];
+    protected $fillable = ['name', 'alias'];
 
-    public function recipient()
+    public function detailAssistance()
     {
-        return $this->hasMany(Recipient::class);
-    }
-
-    public function type()
-    {
-        if ($this->type == 1) {
-            return 'Tunai';
-        } else {
-            return 'Non Tunai';
-        }
+        return $this->hasMany(DetailAssistance::class);
     }
 }

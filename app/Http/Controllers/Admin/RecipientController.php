@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Recipient;
 use App\Http\Requests\StoreRecipientRequest;
 use App\Http\Requests\UpdateRecipientRequest;
-use App\Models\Assistance;
+use App\Models\DetailAssistance;
 use App\Models\Person;
 use App\Models\Profile;
 use Carbon\Carbon;
@@ -62,7 +62,7 @@ class RecipientController extends Controller implements HasMiddleware
                     return $row->person ? $row->person->name : '-';
                 })
                 ->addColumn('assistance', function ($row) {
-                    return $row->assistance ? $row->assistance->name : '-';
+                    return $row->detailAssistance ? $row->detailAssistance->assistance->name : '-';
                 })
                 ->addColumn('status', function ($row) {
                     return $row->status();
@@ -81,8 +81,8 @@ class RecipientController extends Controller implements HasMiddleware
     public function create()
     {
         $persons = Person::latest()->get();
-        $assistances = Assistance::latest()->get();
-        return view('admin.recipient.create', compact('persons', 'assistances'));
+        $detailAssistances = DetailAssistance::latest()->get();
+        return view('admin.recipient.create', compact('persons', 'detailAssistances'));
     }
 
     /**

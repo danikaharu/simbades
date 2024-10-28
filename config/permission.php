@@ -222,6 +222,16 @@ return [
             ]
         ],
         [
+            'group' => 'detail assistances',
+            'lists' => [
+                'view detail assistance',
+                'create detail assistance',
+                'edit detail assistance',
+                'delete detail assistance',
+                'export detail assistance',
+            ]
+        ],
+        [
             'group' => 'works',
             'lists' => [
                 'view work',

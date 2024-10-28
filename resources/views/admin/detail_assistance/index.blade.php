@@ -26,12 +26,20 @@
         <div class="card">
             <div class="card-header">
                 <h5>Data Bantuan</h5>
-                @can('create assistance')
-                    <div class="flex">
-                        <a class="btn btn-primary" href="{{ route('admin.assistance.create') }}"><i
+                @can('create detail assistance')
+                    <div class="btn-group">
+                        <a class="btn btn-primary" href="{{ route('admin.detailAssistance.create') }}"><i
                                 class="bx bx-plus me-1"></i>Input Data
                             Bantuan</a>
                     </div>
+                @endcan
+
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="{{ route('admin.export.assistance') }}"><i
+                            class="bx bxs-printer me-1"></i>Cetak Data
+                        Bantuan</a>
+                </div>
+                @can('export detail assistance')
                 @endcan
 
             </div>
@@ -41,7 +49,8 @@
                         <tr class="text-nowrap">
                             <th>#</th>
                             <th>Nama Bantuan</th>
-                            <th>Singkatan</th>
+                            <th>Tanggal Bantuan</th>
+                            <th>Jenis Bantuan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -76,9 +85,12 @@
                 columns: [{
                         data: 'DT_RowIndex'
                     }, {
-                        data: 'name',
+                        data: 'assistance',
                     }, {
-                        data: 'alias',
+                        data: 'input_date',
+                    },
+                    {
+                        data: 'type',
                     },
                     {
                         data: 'action',

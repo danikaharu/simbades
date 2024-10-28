@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('assistances', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->tinyInteger('type');
-            $table->json('additional_data');
+            $table->string('alias');
             $table->timestamps();
         });
     }

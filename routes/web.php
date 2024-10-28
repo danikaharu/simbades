@@ -16,6 +16,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     // Assistance
     Route::resource('assistance', App\Http\Controllers\Admin\AssistanceController::class);
 
+    // Detail Assistance
+    Route::resource('detailAssistance', App\Http\Controllers\Admin\DetailAssistanceController::class);
+    Route::get('export/assistance', [App\Http\Controllers\Admin\DetailAssistanceController::class, 'export'])->name('export.assistance');
+
     // Work
     // Route::resource('work', App\Http\Controllers\Admin\WorkController::class);
 

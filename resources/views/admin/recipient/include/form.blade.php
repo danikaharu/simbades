@@ -24,18 +24,18 @@
     </div>
     <div class="col-md-12 mb-6">
         <label class="form-label" for="basic-default-fullname">Bantuan</label>
-        <select name="assistance_id" id="assistance_id"
-            class="form-select @error('assistance_id')
+        <select name="detail_assistance_id"
+            class="form-select @error('detail_assistance_id')
         invalid
     @enderror">
             <option disabled selected>-- Pilih Bantuan --</option>
-            @foreach ($assistances as $assistance)
-                <option value="{{ $assistance->id }}"
-                    {{ isset($recipient) && $recipient->assistance_id == $assistance->id ? 'selected' : (old('assistance_id') == $assistance->id ? 'selected' : '') }}>
-                    {{ $assistance->name }} - {{ $assistance->type() }}</option>
+            @foreach ($detailAssistances as $detailAssistance)
+                <option value="{{ $detailAssistance->id }}"
+                    {{ isset($recipient) && $recipient->detail_assistance_id == $detailAssistance->id ? 'selected' : (old('detail_assistance_id') == $detailAssistance->id ? 'selected' : '') }}>
+                    {{ $detailAssistance->assistance->name }} - {{ $detailAssistance->type() }}</option>
             @endforeach
         </select>
-        @error('assistance_id')
+        @error('detail_assistance_id')
             <div class="small text-danger">
                 {{ $message }}
             </div>

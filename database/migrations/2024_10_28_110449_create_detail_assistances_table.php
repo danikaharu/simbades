@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('recipients', function (Blueprint $table) {
+        Schema::create('detail_assistances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('person_id');
-            $table->foreignId('detail_assistance_id');
-            $table->string('year');
-            $table->tinyInteger('status');
-            $table->text('qr_data')->nullable();
+            $table->foreignId('assistance_id');
+            $table->date('input_date');
+            $table->tinyInteger('type');
+            $table->json('additional_data');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('recipients');
+        Schema::dropIfExists('detail_assistances');
     }
 };

@@ -32,9 +32,6 @@ class AssistanceController extends Controller implements HasMiddleware
             $assistances = Assistance::latest()->get();
             return DataTables::of($assistances)
                 ->addIndexColumn()
-                ->addColumn('type', function ($row) {
-                    return $row->type();
-                })
                 ->addColumn('action', 'admin.assistance.include.action')
                 ->rawColumns(['action'])
                 ->make(true);
@@ -59,11 +56,7 @@ class AssistanceController extends Controller implements HasMiddleware
         try {
             $attr = $request->validated();
 
-            Assistance::create([
-                'name' => $attr['name'],
-                'type' => $attr['type'],
-                'additional_data' => json_encode($attr['additional_data']),
-            ]);
+            Assistance::create($attr);
 
             return redirect()->route('admin.assistance.index')->with('success', 'Data berhasil ditambah');
         } catch (\Throwable $th) {
@@ -95,11 +88,7 @@ class AssistanceController extends Controller implements HasMiddleware
         try {
             $attr = $request->validated();
 
-            $assistance->update([
-                'name' => $attr['name'],
-                'type' => $attr['type'], // Update tipe bantuan
-                'additional_data' => json_encode($attr['additional_data']), // Update data tambahan sebagai JSON
-            ]);
+            $assistance->update($attr);
 
             return redirect()
                 ->route('admin.assistance.index')

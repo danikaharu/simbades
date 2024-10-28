@@ -9,16 +9,16 @@ class Recipient extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['person_id', 'assistance_id', 'year', 'status', 'qr_data'];
+    protected $fillable = ['person_id', 'detail_assistance_id', 'year', 'status', 'qr_data'];
 
     public function person()
     {
         return $this->belongsTo(Person::class);
     }
 
-    public function assistance()
+    public function detailAssistance()
     {
-        return $this->belongsTo(Assistance::class);
+        return $this->belongsTo(DetailAssistance::class);
     }
 
     public function status()

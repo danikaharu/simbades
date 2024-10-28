@@ -57,9 +57,9 @@
                                     <span class="avatar-initial rounded bg-label-primary"><i
                                             class="bx bx-notepad bx-lg"></i></span>
                                 </div>
-                                <h4 class="mb-0">{{ $assistance->recipient_count }}</h4>
+                                <h4 class="mb-0">{{ $assistance['recipient_count'] ?? 0 }}</h4>
                             </div>
-                            <p class="mb-2">{{ $assistance->name }} - {{ $assistance->type() }}</p>
+                            <p class="mb-2">{{ $assistance['name'] }}</p>
                         </div>
                     </div>
                 </div>

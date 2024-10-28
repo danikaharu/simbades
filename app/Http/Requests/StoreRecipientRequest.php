@@ -30,8 +30,8 @@ class StoreRecipientRequest extends FormRequest
     {
         return [
             'person_id' => ['required', 'exists:persons,id'],
-            'assistance_id' => ['required', 'exists:assistances,id'],
-            'year' => ['required', 'integer', 'unique:recipients,year,NULL,id,person_id,' . $this->person_id . ',assistance_id,' . $this->assistance_id,],
+            'detail_assistance_id' => ['required', 'exists:detail_assistances,id'],
+            'year' => ['required', 'integer'],
             'status' => ['in:0']
         ];
     }

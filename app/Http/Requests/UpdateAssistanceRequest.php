@@ -23,12 +23,19 @@ class UpdateAssistanceRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'type' => 'required|in:1,2',
-            'additional_data.nominal' => 'required_if:type,1',
-            'additional_data.nama_barang' => 'required_if:type,2|array',
-            'additional_data.nama_barang.*' => 'required_if:type,2', // Validasi untuk setiap nama barang
-            'additional_data.jumlah_barang' => 'required_if:type,2|array',
-            'additional_data.jumlah_barang.*' => 'required_if:type,2', // Validasi untuk setiap jumlah barang
+            'alias' => 'required|string|max:255',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Nama Bantuan Wajib Diisi',
+            'name.string' => 'Nama Bantuan Hanya Angka dan Huruf',
+            'name.max' => 'Nama Bantuan Maksimal 255 Kata',
+            'alias.required' => 'Singkatan Bantuan Wajib Diisi',
+            'alias.string' => 'Singkatan Bantuan Hanya Angka dan Huruf',
+            'alias.max' => 'Singkatan Bantuan Maksimal 255 Kata',
         ];
     }
 }
