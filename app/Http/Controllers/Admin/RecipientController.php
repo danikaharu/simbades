@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\QrCodeScanned;
+use App\Events\QRCodeScanned;
 use App\Exports\RecipientExport;
 use App\Http\Controllers\Controller;
 use App\Models\Recipient;
@@ -19,7 +19,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -205,14 +204,26 @@ class RecipientController extends Controller implements HasMiddleware
         $recipient->status = 1;
         $recipient->save();
 
-        event(new QrCodeScanned($recipient->id));
+        // Emit event untuk memancarkan ke klien
+        broadcast(new QrCodeScanned($request->code));
+
         return response()->json(['status' => 'success', 'message' => 'QR Code berhasil diverifikasi.'], 200);
     }
 
     public function scanned(Request $request)
     {
-        broadcast(new QrCodeScanned($request->code));
-        return response()->json(['status' => 'success']);
+        // Validasi data input
+        $request->validate([
+            'code' => 'required|string',
+        ]);
+
+        // Logika untuk memproses pemindaian
+        $scannedCode = $request->code;
+
+        // Emit event ke Pusher
+        broadcast(new QrCodeScanned($scannedCode));
+
+        return response()->json(['status' => 'success', 'message' => 'QR Code dipindai.']);
     }
 
     public function export(Request $request)

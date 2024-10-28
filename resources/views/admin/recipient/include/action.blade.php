@@ -1,8 +1,15 @@
 <div class="d-flex">
 
     @if ($status == 0)
-        <a class="btn btn-info me-2" href="{{ route('admin.qr-code', $id) }}"><i class="bx bx-qr me-1"></i>
-            QR Code</a>
+        @can('barcode recipient')
+            <a class="btn btn-info me-2" href="{{ route('admin.qr-code.barcode', $id) }}"><i class="bx bx-qr me-1"></i>
+                Cetak QR Code</a>
+        @endcan
+
+        @can('verification recipient')
+            <a class="btn btn-info me-2" href="{{ route('admin.qr-code.scan') }}"><i class="bx bx-scan me-1"></i>
+                Verifikasi QR Code</a>
+        @endcan
     @endif
 
     @can('delete recipient')

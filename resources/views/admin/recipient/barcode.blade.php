@@ -4,260 +4,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Bantuan</title>
+    <title>QR Code</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         body {
+            background-color: #f8f9fa;
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+            color: #343a40;
         }
 
         .container {
-            background-color: white;
-            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
             padding: 20px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .nav-tabs {
-            display: flex;
-            justify-content: space-around;
+        h1 {
+            text-align: center;
             margin-bottom: 20px;
         }
 
-        .nav-tabs button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .nav-tabs button:hover {
-            background-color: #0056b3;
-        }
-
-        .nav-tabs button.active {
-            background-color: #0056b3;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        #qr-code {
-            margin: 20px 0;
-        }
-
-        #reader {
-            width: 100%;
-            height: 100%;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #result {
-            margin-top: 10px;
+        #countdown {
+            font-size: 1.5em;
             font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
         }
 
-        #loader {
-            display: none;
-            font-size: 1.2em;
-            margin-top: 10px;
+        img {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="nav-tabs">
-            @can('barcode recipient')
-                <button id="btn-tampil" class="active" onclick="toggleTabs('tampil')">Tampil QR Code</button>
-            @endcan
+        <h1>Scan QR Code untuk Verifikasi</h1>
 
-            @can('verification recipient')
-                <button id="btn-scan" onclick="toggleTabs('scan')">Scan QR Code</button>
-            @endcan
-        </div>
-
-        @can('barcode recipient')
-            <!-- Tampil QR Code Content -->
-            <div id="tab-tampil" class="tab-content active">
-                <h1>Tampil QR Code</h1>
-                <div id="qr-code">
-                    <img src="{{ $qrCodeDataUri }}" alt="QR Code" style="max-width: 100%; height: auto;">
-                    <!-- Menjaga proporsi gambar -->
-                </div>
-                <p>Kode berlaku selama:</p>
-                <p id="countdown" style="font-size: 1.2em; font-weight: bold;"></p>
-            </div>
-        @endcan
-
-        @can('verification recipient')
-            <!-- Scan QR Code Content -->
-            <div id="tab-scan" class="tab-content">
-                <h1>Scan QR Code</h1>
-                <div id="reader"></div>
-                <div id="result"></div>
-            </div>
-        @endcan
+        <img src="{{ $qrCodeDataUri }}" alt="QR Code">
+        <p class="text-center">Kode berlaku selama:</p>
+        <p id="countdown"></p>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="{{ asset('template_admin/js/html5-qrcode.min.js') }}"></script>
-
     <script>
-        const expirationTime = new Date("{{ \Carbon\Carbon::parse($expiration)->toIso8601String() }}");
+        $(document).ready(function() {
+            function initPusher() {
+                Pusher.logToConsole = true;
 
-        function startCountdown() {
-            const countdownElement = document.getElementById('countdown');
-
-            const interval = setInterval(() => {
-                const now = new Date();
-                const timeLeft = expirationTime - now;
-
-                if (timeLeft <= 0) {
-                    countdownElement.innerText = "00:00";
-                    clearInterval(interval);
-                    return;
-                }
-
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-                countdownElement.innerText = String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2,
-                    '0');
-            }, 1000);
-        }
-
-        window.onload = function() {
-            startCountdown();
-        };
-
-        function toggleTabs(activeTab) {
-            ['tampil', 'scan'].forEach(tab => {
-                document.getElementById('tab-' + tab).classList.toggle('active', tab === activeTab);
-                document.getElementById('btn-' + tab).classList.toggle('active', tab === activeTab);
-            });
-            if (activeTab === 'scan') {
-                startScanner();
-            } else {
-                stopScanner();
-            }
-        }
-
-        let html5QrCode = null;
-
-        function startScanner() {
-            html5QrCode = new Html5Qrcode("reader");
-            html5QrCode.start({
-                    facingMode: "environment"
-                }, {
-                    fps: 10,
-                    qrbox: 250
-                },
-                onScanSuccess,
-                onScanError
-            );
-        }
-
-        function stopScanner() {
-            if (html5QrCode) {
-                html5QrCode.stop().then(() => {
-                    console.log("QR code scanner stopped.");
-                }).catch(err => {
-                    console.log("Unable to stop scanner: " + err);
+                // Inisialisasi Pusher
+                var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+                    cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
                 });
-            }
-        }
 
-        function onScanSuccess(decodedText, decodedResult) {
-            document.getElementById('result').innerText = decodedText;
-            performAction(decodedText);
-            console.log(`Code scanned = ${decodedText}`, decodedResult);
-            stopScanner();
-        }
+                // Berlangganan channel dan mendengarkan event
+                var channel = pusher.subscribe('qr-scanned');
 
-        function onScanError(errorMessage) {
-            console.log(`Error scanning QR code: ${errorMessage}`);
-        }
-
-        function performAction(decodedText) {
-            $.ajax({
-                url: '/admin/qr-code/verification',
-                method: 'POST',
-                data: {
-                    code: decodedText,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    if (response.status === 'success') {
-                        startPolling(decodedText);
-                    } else {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Info',
-                            text: response.message,
-                        });
-                    }
-                },
-                error: function(xhr) {
+                // Mendengarkan event qr-code-scanned
+                channel.bind('qr-code-scanned', function(data) {
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal',
-                        text: xhr.responseJSON.message || 'Terjadi kesalahan!',
+                        icon: 'success',
+                        title: 'QR Code Dipindai',
+                        text: 'QR Code ini berhasil dipindai!',
+                    }).then(() => {
+                        window.location.href = '{{ route('admin.recipient.index') }}';
                     });
-                }
-            });
-        }
-
-        let pollingInterval = null;
-
-        function startPolling(decodedText) {
-            pollingInterval = setInterval(() => {
-                $.ajax({
-                    url: '/admin/qr-code/status',
-                    method: 'POST',
-                    data: {
-                        code: decodedText,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        if (response.status === 'scanned') {
-                            clearInterval(pollingInterval);
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'QR Code Dipindai',
-                                text: 'QR Code ini berhasil dipindai oleh perangkat lain!',
-                            }).then(() => {
-                                window.location.href = response.redirect;
-                            });
-                        }
-                    },
-                    error: function(xhr) {
-                        clearInterval(pollingInterval);
-                        console.log('Error during polling: ' + xhr.responseText);
-                    }
                 });
-            }, 5000);
-        }
-    </script>
+            }
 
+            const expirationTime = new Date("{{ \Carbon\Carbon::parse($expiration)->toIso8601String() }}");
+
+            function startCountdown() {
+                const countdownElement = document.getElementById('countdown');
+
+                const interval = setInterval(() => {
+                    const now = new Date();
+                    const timeLeft = expirationTime - now;
+
+                    if (timeLeft <= 0) {
+                        countdownElement.innerText = "00:00";
+                        clearInterval(interval);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'QR Code Kadaluarsa',
+                            text: 'Waktu pemindaian telah habis. Silakan generate ulang QR code.',
+                        });
+                        return;
+                    }
+
+                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                    countdownElement.innerText = String(minutes).padStart(2, '0') + ":" + String(seconds)
+                        .padStart(2, '0');
+                }, 1000);
+            }
+
+            initPusher();
+            startCountdown();
+        });
+    </script>
 </body>
 
 </html>

@@ -26,10 +26,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
     // Recipient
     Route::resource('recipient', App\Http\Controllers\Admin\RecipientController::class);
-    Route::get('qr-code/{recipient}', [App\Http\Controllers\Admin\RecipientController::class, 'download'])->name('qr-code');
-    Route::get('qr-code/refresh/{recipient}', [App\Http\Controllers\Admin\RecipientController::class, 'refreshQrCode']);
+    Route::get('/qr-code/scan', [App\Http\Controllers\Admin\RecipientController::class, 'showScanPage'])->name('qr-code.scan');
+    Route::get('/qr-code/barcode/{recipient}', [App\Http\Controllers\Admin\RecipientController::class, 'showBarcodePage'])->name('qr-code.barcode');
     Route::post('/qr-code/verification', [App\Http\Controllers\Admin\RecipientController::class, 'verificationQrCode'])->name('qr-code.verification');
-    Route::post('/qr-code/status', [App\Http\Controllers\Admin\RecipientController::class, 'checkQrCodeStatus'])->name('qr-code.status');
+    Route::post('/qr-code/scanned', [App\Http\Controllers\Admin\RecipientController::class, 'scanned']);
     Route::get('export/recipient', [App\Http\Controllers\Admin\RecipientController::class, 'export'])->name('export.recipient');
 
     // Profile
