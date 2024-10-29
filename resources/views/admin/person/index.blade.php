@@ -55,11 +55,11 @@
                 <table class="table" id="listData">
                     <thead>
                         <tr class="text-nowrap">
-                            <th>#</th>
+                            <th>No KK</th>
+                            <th>NIK</th>
                             <th>Nama</th>
-                            <th>Jenis Kelamin</th>
-                            <th>Pekerjaan Utama</th>
-                            <th>Penghasilan Per Bulan</th>
+                            <th>Pekerjaan</th>
+                            <th>Penghasilan</th>
                             <th>Dusun</th>
                             <th>Aksi</th>
                         </tr>
@@ -93,12 +93,12 @@
                 },
                 ajax: '{{ url()->current() }}',
                 columns: [{
-                        data: 'DT_RowIndex'
+                        data: 'family_card'
                     },
                     {
-                        data: 'name',
+                        data: 'identification_number',
                     }, {
-                        data: 'gender',
+                        data: 'name',
                     },
                     {
                         data: 'work',
