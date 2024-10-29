@@ -35,28 +35,33 @@
             </li>
         @endcan
 
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons tf-icons bx bx-notepad"></i>
-                <div class="text-truncate" data-i18n="Bantuan">Bantuan</div>
-            </a>
-            <ul class="menu-sub">
-                @can('view assistance')
-                    <li class="menu-item {{ request()->is('admin/assistance', 'admin/assistance/*') ? ' active' : '' }}">
-                        <a href="{{ route('admin.assistance.index') }}" class="menu-link">
-                            <div class="text-truncate" data-i18n="Nama Bantuan">Nama Bantuan</div>
-                        </a>
-                    </li>
-                @endcan
+        @hasanyrole('Super Admin')
+            <li
+                class="menu-item {{ request()->is('admin/assistance', 'admin/assistance/*', 'admin/detailAssistance', 'admin/detailAssistance/*') ? ' active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons tf-icons bx bx-notepad"></i>
+                    <div class="text-truncate" data-i18n="Bantuan">Bantuan</div>
+                </a>
+                <ul class="menu-sub">
+                    @can('view assistance')
+                        <li class="menu-item {{ request()->is('admin/assistance', 'admin/assistance/*') ? ' active' : '' }}">
+                            <a href="{{ route('admin.assistance.index') }}" class="menu-link">
+                                <div class="text-truncate" data-i18n="Nama Bantuan">Nama Bantuan</div>
+                            </a>
+                        </li>
+                    @endcan
 
-                <li
-                    class="menu-item {{ request()->is('admin/detailAssistance', 'admin/detailAssistance/*') ? ' active' : '' }}">
-                    <a href="{{ route('admin.detailAssistance.index') }}" class="menu-link">
-                        <div class="text-truncate" data-i18n="Jenis Bantuan">Jenis Bantuan</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+                    @can('view detail assistance')
+                        <li
+                            class="menu-item {{ request()->is('admin/detailAssistance', 'admin/detailAssistance/*') ? ' active' : '' }}">
+                            <a href="{{ route('admin.detailAssistance.index') }}" class="menu-link">
+                                <div class="text-truncate" data-i18n="Jenis Bantuan">Jenis Bantuan</div>
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+        @endhasanyrole
         {{-- 
         @can('view work')
             <li class="menu-item {{ request()->is('admin/work', 'admin/work/*') ? ' active' : '' }}">
