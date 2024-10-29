@@ -46,13 +46,13 @@ class RecipientController extends Controller implements HasMiddleware
 
         $recipientQUery = Recipient::query();
 
-        if (Auth::user()->roles->first()->id == 1) {
-            $recipients = $recipientQUery->with('person')->latest()->get();
-        } else {
+        if (Auth::user()->roles->first()->id == 2) {
             $recipients =  Recipient::with('person')
                 ->whereHas('person', function ($query) use ($userInfo) {
                     $query->where('identification_number', $userInfo->identification_number);
                 })->latest()->get();
+        } else {
+            $recipients = $recipientQUery->with('person')->latest()->get();
         }
 
         if (request()->ajax()) {
