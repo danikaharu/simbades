@@ -150,9 +150,9 @@ class RecipientController extends Controller implements HasMiddleware
 
         $qrData = json_encode([
             'nama' => $recipient->person->name,
-            'bantuan' => $recipient->assistance->name,
-            'jenis bantuan' => $recipient->assistance->type(),
-            'keterangan' => $recipient->assistance->additional_data,
+            'bantuan' => $recipient->detailAssistance->assistance->name,
+            'jenis bantuan' => $recipient->detailAssistance->type(),
+            'keterangan' => $recipient->detailAssistance->additional_data,
             'waktu kadaluarsa' => $expiration->toDateTimeString()
         ]);
 
