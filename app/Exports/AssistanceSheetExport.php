@@ -30,7 +30,7 @@ class AssistanceSheetExport implements FromCollection, WithTitle, WithMapping, W
 
     public function collection()
     {
-        return Recipient::where('assistance_id', $this->assistanceId)
+        return Recipient::where('detail_assistance_id', $this->assistanceId)
             ->where('year', $this->year)
             ->get();
     }

@@ -22,7 +22,7 @@ class RecipientExport implements WithMultipleSheets
         $assistances = Assistance::all();
 
         foreach ($assistances as $assistance) {
-            $sheets[] = new AssistanceSheetExport($assistance->id, $assistance->name, $this->year); // ID dan nama bantuan
+            $sheets[] = new AssistanceSheetExport($assistance->id, $assistance->alias, $this->year); // ID dan nama bantuan
         }
 
         return $sheets;

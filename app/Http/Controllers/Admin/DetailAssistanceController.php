@@ -11,6 +11,7 @@ use App\Http\Requests\StoreDetailAssistanceRequest;
 use App\Http\Requests\UpdateDetailAssistanceRequest;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class DetailAssistanceController extends Controller implements HasMiddleware
@@ -142,6 +143,6 @@ class DetailAssistanceController extends Controller implements HasMiddleware
 
     public function export()
     {
-        return (new AssistanceExport)->download('Data Bantuan.xlsx');
+        return Excel::download(new AssistanceExport(), 'Data Bantuan.xlsx');
     }
 }

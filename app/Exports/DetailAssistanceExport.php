@@ -12,9 +12,10 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
 
-class DetailAssistanceExport implements FromCollection, WithCustomStartCell, WithHeadings, WithMapping, WithEvents, ShouldAutoSize
+class DetailAssistanceExport implements FromCollection, WithTitle, WithCustomStartCell, WithHeadings, WithMapping, WithEvents, ShouldAutoSize
 {
     use Exportable;
 
@@ -27,6 +28,11 @@ class DetailAssistanceExport implements FromCollection, WithCustomStartCell, Wit
         $this->assistanceId = $assistanceId;
         $this->assistanceName = $assistanceName;
         $this->row = 1;
+    }
+
+    public function title(): string
+    {
+        return $this->assistanceName;
     }
 
     public function collection()

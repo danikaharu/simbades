@@ -23,14 +23,14 @@
                     <tbody>
                         @php $no = 1; @endphp
                         @foreach ($results as $data)
-                            @foreach ($data->recipients as $item)
+                            @foreach ($data->recipients as $recipient)
                                 <tr>
                                     <th scope="row">{{ $no++ }}</th>
                                     <td>{{ $data->name }}</td>
                                     <td>{{ $data->work }}</td>
-                                    <td>{{ $data->village->name }}</td>
-                                    <td>{{ $item->assistance->name }}</td>
-                                    <td>{{ $item->status() }}</td>
+                                    <td>{{ $data->village?->name ?? '-' }}</td>
+                                    <td>{{ $recipient->detailAssistance?->assistance?->name ?? '-' }}</td>
+                                    <td>{{ $recipient->status() }}</td>
                                 </tr>
                             @endforeach
                         @endforeach

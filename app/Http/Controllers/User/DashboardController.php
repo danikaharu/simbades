@@ -26,19 +26,18 @@ class DashboardController extends Controller
 
         $results = Person::query();
 
-        if ($name) {
+        if (!empty($name)) {
             $results->where('name', 'LIKE', '%' . $name . '%');
         }
 
-        if ($assistanceId) {
-            $results->whereHas('recipients', function ($query) use ($assistanceId) {
-                $query->where('assistance_id', $assistanceId);
+        if (!empty($assistanceId)) {
+            $results->whereHas('recipients.detailAssistance.assistance', function ($query) use ($assistanceId) {
+                $query->where('id', $assistanceId);
             });
         }
 
         $results = $results->get();
 
-        // dd($results);
 
         return view('user.search', compact('profile', 'results'));
     }
