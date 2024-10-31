@@ -1,10 +1,10 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand">
-        <a href="index.html" class="app-brand-link">
+        <a href="{{ route('admin.dashboard') }}" class="app-brand-link">
             <span class="app-brand-logo">
                 <img src="{{ asset('storage/upload/logo/' . $profile->village_logo) }}" alt="" width="25">
             </span>
-            <span class="app-brand-text menu-text fw-bold ms-2">SIMBADES</span>
+            <span class="app-brand-text menu-text fw-bold ms-2">{{ config('app.name') }}</span>
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">

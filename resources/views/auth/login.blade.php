@@ -56,7 +56,7 @@
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-2">Welcome to SIBAMDES! 👋</h4>
+                        <h4 class="mb-2">Welcome to {{ config('app.name') }}! 👋</h4>
                         <p class="mb-4">Masuk untuk mengakses halaman Administrator!</p>
 
                         <form class="mb-3" action="{{ route('login') }}" method="POST">

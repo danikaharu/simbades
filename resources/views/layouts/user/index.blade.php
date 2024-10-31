@@ -13,7 +13,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SIMBADES</title>
+    <title>{{ config('app.name') }}</title>
 
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('template_user/css/bootstrap.css') }}" />
