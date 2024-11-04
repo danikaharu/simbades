@@ -205,7 +205,7 @@ class RecipientController extends Controller implements HasMiddleware
         $recipient->save();
 
         // Emit event untuk memancarkan ke klien
-        broadcast(new QrCodeScanned($request->code));
+        event(new QrCodeScanned($request->code));
 
         return response()->json(['status' => 'success', 'message' => 'QR Code berhasil diverifikasi.'], 200);
     }

@@ -11,38 +11,19 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         body {
-            background-color: #f8f9fa;
             font-family: Arial, sans-serif;
-            color: #343a40;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 400px;
             margin: auto;
-            padding: 20px;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
             text-align: center;
-            margin-bottom: 20px;
         }
 
         #countdown {
             font-size: 1.5em;
             font-weight: bold;
-            text-align: center;
             margin-top: 20px;
-        }
-
-        img {
-            display: block;
-            margin: 0 auto;
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
         }
     </style>
 </head>
@@ -50,69 +31,45 @@
 <body>
     <div class="container">
         <h1>Scan QR Code untuk Verifikasi</h1>
-
         <img src="{{ $qrCodeDataUri }}" alt="QR Code">
-        <p class="text-center">Kode berlaku selama:</p>
+        <p>Kode berlaku selama:</p>
         <p id="countdown"></p>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script>
-        $(document).ready(function() {
-            function initPusher() {
-                Pusher.logToConsole = true;
+        document.addEventListener("DOMContentLoaded", function() {
+            // Inisialisasi Pusher
+            Pusher.logToConsole = true;
+            var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+                cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
+            });
+            pusher.connection.bind('error', function(error) {
+                console.error('Pusher Error: ', error);
+            });
+            var channel = pusher.subscribe('barcode-channel');
+            console.log(channel.bind('QrCodeScanned'));
+            channel.bind('QrCodeScanned', function(data) {
+                console.log('Event QrCodeScanned berhasil di-bind.');
+                console.log('Data yang diterima:', data);
 
-                // Inisialisasi Pusher
-                var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
-                    cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
-                });
+                alert(`QR Code ${data.code} berhasil diverifikasi!`);
+                window.location.href = "{{ route('admin.recipient.index') }}";
+            });
 
-                // Berlangganan channel dan mendengarkan event
-                var channel = pusher.subscribe('qr-scanned');
-
-                // Mendengarkan event qr-code-scanned
-                channel.bind('qr-code-scanned', function(data) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'QR Code Dipindai',
-                        text: 'QR Code ini berhasil dipindai!',
-                    }).then(() => {
-                        window.location.href = '{{ route('admin.recipient.index') }}';
-                    });
-                });
-            }
-
-            const expirationTime = new Date("{{ \Carbon\Carbon::parse($expiration)->toIso8601String() }}");
-
-            function startCountdown() {
-                const countdownElement = document.getElementById('countdown');
-
-                const interval = setInterval(() => {
-                    const now = new Date();
-                    const timeLeft = expirationTime - now;
-
-                    if (timeLeft <= 0) {
-                        countdownElement.innerText = "00:00";
-                        clearInterval(interval);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'QR Code Kadaluarsa',
-                            text: 'Waktu pemindaian telah habis. Silakan generate ulang QR code.',
-                        });
-                        return;
-                    }
-
-                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-                    countdownElement.innerText = String(minutes).padStart(2, '0') + ":" + String(seconds)
-                        .padStart(2, '0');
-                }, 1000);
-            }
-
-            initPusher();
-            startCountdown();
+            // Countdown timer
+            const expiration = new Date("{{ $expiration->toIso8601String() }}");
+            setInterval(() => {
+                const now = new Date();
+                const timeLeft = expiration - now;
+                if (timeLeft <= 0) {
+                    document.getElementById('countdown').innerText = "00:00";
+                } else {
+                    const minutes = Math.floor(timeLeft / 60000);
+                    const seconds = Math.floor((timeLeft % 60000) / 1000);
+                    document.getElementById('countdown').innerText =
+                        `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                }
+            }, 1000);
         });
     </script>
 </body>

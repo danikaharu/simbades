@@ -3,10 +3,10 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class QrCodeScanned implements ShouldBroadcast
 {
@@ -21,11 +21,11 @@ class QrCodeScanned implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new Channel('qr-code-status');
+        return new Channel('barcode-channel');
     }
 
     public function broadcastAs()
     {
-        return 'qr-code-scanned';
+        return 'QrCodeScanned';
     }
 }

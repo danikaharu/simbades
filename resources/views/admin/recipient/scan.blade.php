@@ -34,16 +34,6 @@
             border-radius: 5px;
             margin-top: 20px;
         }
-
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
-            color: green;
-        }
-
-        .hidden {
-            display: none;
-        }
     </style>
 </head>
 
@@ -51,26 +41,24 @@
     <div class="container">
         <h1>Scan QR Code</h1>
         <div id="reader"></div>
-        <div id="result" class="hidden">Hasil QR Code akan muncul disini</div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="{{ asset('template_admin/js/html5-qrcode.min.js') }}"></script>
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="{{ asset('template_admin/js/html5-qrcode.min.js') }}"></script>
+    <script src="{{ mix('/js/app.js') }}"></script>
     <script>
         let html5QrCode = new Html5Qrcode("reader");
 
-        // Fungsi untuk memulai scanner
         function startScanner() {
             html5QrCode.start({
                     facingMode: "environment"
-                }, // Menggunakan kamera belakang
-                {
+                }, {
                     fps: 10,
                     qrbox: 250
-                }, // Pengaturan frame rate dan ukuran kotak QR
+                },
                 onScanSuccess,
                 onScanError
             ).catch((err) => {
@@ -78,7 +66,6 @@
             });
         }
 
-        // Fungsi untuk menghentikan scanner
         function stopScanner() {
             if (html5QrCode) {
                 html5QrCode.stop().then(() => {
@@ -89,13 +76,7 @@
             }
         }
 
-        // Fungsi yang dipanggil saat pemindaian berhasil
         function onScanSuccess(decodedText, decodedResult) {
-            document.getElementById('result').innerText = `Data Penerimaan Bantuan: ${decodedText}`;
-            document.getElementById('result').classList.remove('hidden'); // Menampilkan hasil
-            console.log(`Code scanned = ${decodedText}`, decodedResult);
-
-            // AJAX untuk verifikasi QR code
             $.ajax({
                 url: '/admin/qr-code/verification',
                 method: 'POST',
@@ -112,6 +93,9 @@
                                 icon: 'success',
                                 title: 'Verifikasi QR Code',
                                 text: 'QR Code berhasil diverifikasi!'
+                            }).then(() => {
+                                window.location.href =
+                                    '{{ route('admin.recipient.index') }}';
                             });
                         });
                     } else {
@@ -131,37 +115,24 @@
                 }
             });
 
-            stopScanner(); // Hentikan scanner setelah pemindaian
+            stopScanner();
         }
 
-        // Fungsi yang dipanggil saat ada kesalahan saat pemindaian
+        let isErrorShown = false;
+
         function onScanError(errorMessage) {
-            console.error(`QR Code scan error: ${errorMessage}`);
+            if (!isErrorShown) {
+                console.error(`QR Code scan error: ${errorMessage}`);
+                isErrorShown = true; // Tandai error telah ditampilkan
+                setTimeout(() => {
+                    isErrorShown = false; // Reset kondisi setelah beberapa waktu
+                }, 3000); // 3000 ms = 3 detik
+            }
         }
 
-        // Memulai scanner saat halaman dimuat
         window.onload = function() {
             startScanner();
         };
-
-        // Inisialisasi Pusher
-        var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
-            cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
-        });
-
-        // Berlangganan ke channel
-        var channel = pusher.subscribe('qr-scanned');
-
-        // Mendengarkan event broadcast 'qr-code-scanned'
-        channel.bind('qr-code-scanned', function(data) {
-            Swal.fire({
-                icon: 'success',
-                title: 'QR Code Dipindai',
-                text: `QR Code ${data.code} berhasil diverifikasi!`
-            }).then(() => {
-                window.location.href = '{{ route('admin.recipient.index') }}';
-            });
-        });
     </script>
 </body>
 
