@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\QRCodeScanned;
+use App\Events\QrCodeScanned;
 use App\Exports\RecipientExport;
 use App\Http\Controllers\Controller;
 use App\Models\Recipient;

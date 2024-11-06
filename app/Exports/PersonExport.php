@@ -31,7 +31,9 @@ class PersonExport implements FromCollection, WithHeadings, WithMapping, ShouldA
     public function collection()
     {
         if ($this->lowIncome) {
-            return Person::where('income_month', '<=', 500000)->get();
+            return Person::where('income_month', '<=', 500000)
+                ->where('kinship', 1)
+                ->get();
         } else {
             return Person::latest()->get();
         }
@@ -104,7 +106,7 @@ class PersonExport implements FromCollection, WithHeadings, WithMapping, ShouldA
                 $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
                 $drawing->setName('Logo');
                 $drawing->setDescription('Logo');
-                $drawing->setPath(public_path('storage/upload/logo/' . $profile->village_logo)); // Sesuaikan path logo
+                $drawing->setPath(asset('storage/upload/logo/' . $profile->village_logo)); // Sesuaikan path logo
                 $drawing->setHeight(90); // Tinggi logo
                 $drawing->setCoordinates('G2'); // Lokasi penempatan logo
                 $drawing->setOffsetX(-20);

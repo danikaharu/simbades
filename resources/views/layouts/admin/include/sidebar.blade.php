@@ -55,7 +55,7 @@
                         <li
                             class="menu-item {{ request()->is('admin/detailAssistance', 'admin/detailAssistance/*') ? ' active' : '' }}">
                             <a href="{{ route('admin.detailAssistance.index') }}" class="menu-link">
-                                <div class="text-truncate" data-i18n="Jenis Bantuan">Jenis Bantuan</div>
+                                <div class="text-truncate" data-i18n="Jenis Bantuan">Data Bantuan</div>
                             </a>
                         </li>
                     @endcan

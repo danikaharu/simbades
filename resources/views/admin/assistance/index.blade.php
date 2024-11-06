@@ -29,7 +29,7 @@
                 @can('create assistance')
                     <div class="flex">
                         <a class="btn btn-primary" href="{{ route('admin.assistance.create') }}"><i
-                                class="bx bx-plus me-1"></i>Input Data
+                                class="bx bx-plus me-1"></i>Input Nama
                             Bantuan</a>
                     </div>
                 @endcan
