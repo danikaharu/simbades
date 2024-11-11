@@ -4,8 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assistance;
-use App\Models\Person;
 use App\Models\Profile;
+use App\Models\Recipient;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -24,21 +24,25 @@ class DashboardController extends Controller
         $name = $request->input('name');
         $assistanceId = $request->input('assistance_id');
 
-        $results = Person::query();
+        $results = Recipient::query();
 
+        // Filter berdasarkan nama jika ada
         if (!empty($name)) {
-            $results->where('name', 'LIKE', '%' . $name . '%');
-        }
-
-        if (!empty($assistanceId)) {
-            $results->whereHas('recipients.detailAssistance.assistance', function ($query) use ($assistanceId) {
-                $query->where('id', $assistanceId);
+            $results->whereHas('person', function ($query) use ($name) {
+                $query->where('name', 'LIKE', '%' . $name . '%');
             });
         }
 
+        // Filter berdasarkan assistance_id jika ada
+        if (!empty($assistanceId)) {
+            $results->whereHas('detailAssistance', function ($query) use ($assistanceId) {
+                $query->where('assistance_id', 'LIKE', '%' . $assistanceId . '%');
+            });
+        }
+
+        // Mengambil hasil query yang telah difilter
         $results = $results->get();
 
-
-        return view('user.search', compact('profile', 'results'));
+        return view('user.search', compact('profile', 'results', 'assistanceId'));
     }
 }

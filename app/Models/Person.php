@@ -45,7 +45,7 @@ class Person extends Model
 
     public function recipients()
     {
-        return $this->hasMany(Recipient::class, 'person_id');
+        return $this->hasMany(Recipient::class);
     }
 
     public function gender()

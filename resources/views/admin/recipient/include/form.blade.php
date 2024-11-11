@@ -3,12 +3,12 @@
 @endpush
 
 <div class="row">
-    <div class="col-md-12 mb-6">
+    <div class="col-md-6 mb-6">
         <label class="form-label" for="basic-default-fullname">Bantuan</label>
         <select name="detail_assistance_id"
             class="form-select @error('detail_assistance_id')
         invalid
-    @enderror form-select-sm">
+    @enderror form-select">
             <option disabled selected>-- Pilih Bantuan --</option>
             @foreach ($detailAssistances as $detailAssistance)
                 <option value="{{ $detailAssistance->id }}"
@@ -22,12 +22,12 @@
             </div>
         @enderror
     </div>
-    <div class="col-md-12 mb-6">
+    <div class="col-md-6 mb-6">
         <label class="form-label" for="basic-default-fullname">Tahun Penerimaan</label>
         <select name="year" id="year"
             class="form-select @error('year')
         invalid
-    @enderror form-select-sm">
+    @enderror form-select">
             <option disabled selected>-- Pilih Tahun --</option>
             @php
                 $year = date('Y');

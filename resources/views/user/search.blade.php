@@ -23,16 +23,14 @@
                     <tbody>
                         @php $no = 1; @endphp
                         @foreach ($results as $data)
-                            @foreach ($data->recipients as $recipient)
-                                <tr>
-                                    <th scope="row">{{ $no++ }}</th>
-                                    <td>{{ $data->name }}</td>
-                                    <td>{{ $data->work }}</td>
-                                    <td>{{ $data->village?->name ?? '-' }}</td>
-                                    <td>{{ $recipient->detailAssistance?->assistance?->name ?? '-' }}</td>
-                                    <td>{{ $recipient->status() }}</td>
-                                </tr>
-                            @endforeach
+                            <tr>
+                                <th scope="row">{{ $no++ }}</th>
+                                <td>{{ $data->person->name }}</td>
+                                <td>{{ $data->person->work }}</td>
+                                <td>{{ $data->person->village->name ?? '-' }}</td>
+                                <td>{{ $data->detailAssistance?->assistance?->name ?? '-' }}</td>
+                                <td>{{ $data->status() }}</td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
