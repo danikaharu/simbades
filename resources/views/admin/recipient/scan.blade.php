@@ -48,7 +48,7 @@
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{ asset('template_admin/js/html5-qrcode.min.js') }}"></script>
-    <script src="{{ mix('/js/app.js') }}"></script>
+    <script src="{!! asset('css/app') !!}"></script>
     <script>
         let html5QrCode = new Html5Qrcode("reader");
 
