@@ -34,6 +34,7 @@ class RecipientController extends Controller implements HasMiddleware
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('export recipient'), only: ['export']),
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('barcode recipient'), only: ['showBarcodePage']),
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('verification recipient'), only: ['showScanPage', 'verificationQrCode']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('reset status recipient'), only: ['reset']),
         ];
     }
 
@@ -235,6 +236,23 @@ class RecipientController extends Controller implements HasMiddleware
             return Excel::download(new RecipientExport($year), 'Bantuan Sosial Desa ' . $profile->village_name . ' Tahun ' . $year . '.xlsx');
         } else {
             return redirect()->back()->with('error', 'Maaf, tidak bisa export data');
+        }
+    }
+
+    public function reset(Recipient $recipient)
+    {
+        try {
+            $recipient->update(
+                ['status' => 0]
+            );
+
+            return redirect()
+                ->route('admin.recipient.index')
+                ->with('success', __('Status Berhasil di Reset'));
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route('admin.recipient.index')
+                ->with('error', __($th->getMessage()));
         }
     }
 }

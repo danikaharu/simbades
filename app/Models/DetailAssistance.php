@@ -13,7 +13,7 @@ class DetailAssistance extends Model
 
     public function assistance()
     {
-        return $this->belongsTo(Assistance::class);
+        return $this->belongsTo(Assistance::class, 'assistance_id');
     }
 
     public function recipient()

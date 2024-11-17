@@ -12,6 +12,17 @@
         @endcan
     @endif
 
+    @if ($status == 1)
+        @can('reset status recipient')
+            <form action="{{ route('admin.reset.recipient', $id) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <button type="submit" class="btn btn-info me-2"><i class="bx bx-reset">Reset Status Penerima</i>
+                </button>
+            </form>
+        @endcan
+    @endif
+
     @can('delete recipient')
         <form action="{{ route('admin.recipient.destroy', $id) }}" method="POST" role="alert" alert-title="Hapus Data"
             alert-text="Yakin ingin menghapusnya?">

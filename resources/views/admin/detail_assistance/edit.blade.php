@@ -16,7 +16,7 @@
                             @csrf
                             @method('PUT')
 
-                            @include('admin.detailAssistance.include.form')
+                            @include('admin.detail_assistance.include.form')
 
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </form>

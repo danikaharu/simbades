@@ -259,7 +259,8 @@ return [
                 'delete recipient',
                 'export recipient',
                 'barcode recipient',
-                'verification recipient'
+                'verification recipient',
+                'reset status recipient'
             ]
         ],
         [

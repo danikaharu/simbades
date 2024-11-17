@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use App\Models\Person;
 use App\Models\Recipient;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -30,9 +29,13 @@ class AssistanceSheetExport implements FromCollection, WithTitle, WithMapping, W
 
     public function collection()
     {
-        return Recipient::where('detail_assistance_id', $this->assistanceId)
+        $data = Recipient::whereHas('detailAssistance.assistance', function ($query) {
+            $query->where('id', $this->assistanceId);
+        })
             ->where('year', $this->year)
             ->get();
+
+        return $data;
     }
 
     public function title(): string

@@ -35,6 +35,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::post('/qr-code/verification', [App\Http\Controllers\Admin\RecipientController::class, 'verificationQrCode'])->name('qr-code.verification');
     Route::post('/qr-code/scanned', [App\Http\Controllers\Admin\RecipientController::class, 'scanned']);
     Route::get('export/recipient', [App\Http\Controllers\Admin\RecipientController::class, 'export'])->name('export.recipient');
+    Route::put('reset/recipient/{recipient}', [App\Http\Controllers\Admin\RecipientController::class, 'reset'])->name('reset.recipient');
 
     // Profile
     Route::resource('profile', App\Http\Controllers\Admin\ProfileController::class);
