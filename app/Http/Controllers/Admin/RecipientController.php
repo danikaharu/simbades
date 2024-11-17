@@ -168,9 +168,9 @@ class RecipientController extends Controller implements HasMiddleware
             ->margin(10)
             ->build();
 
-        $qrCodeDataUri = $result->getDataUri();
+        $qrCode = $result->getDataUri();
 
-        return view('admin.recipient.barcode', compact('recipient', 'qrCodeDataUri', 'expiration'));
+        return view('admin.recipient.barcode', compact('recipient', 'qrCode', 'expiration'));
     }
 
     public function showScanPage()
@@ -211,20 +211,9 @@ class RecipientController extends Controller implements HasMiddleware
         return response()->json(['status' => 'success', 'message' => 'QR Code berhasil diverifikasi.'], 200);
     }
 
-    public function scanned(Request $request)
+    public function scanned(Recipient $recipient)
     {
-        // Validasi data input
-        $request->validate([
-            'code' => 'required|string',
-        ]);
-
-        // Logika untuk memproses pemindaian
-        $scannedCode = $request->code;
-
-        // Emit event ke Pusher
-        broadcast(new QrCodeScanned($scannedCode));
-
-        return response()->json(['status' => 'success', 'message' => 'QR Code dipindai.']);
+        return response()->json(['status' => $recipient->status]);
     }
 
     public function export(Request $request)
