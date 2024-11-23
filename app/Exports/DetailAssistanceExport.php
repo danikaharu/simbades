@@ -96,7 +96,7 @@ class DetailAssistanceExport implements FromCollection, WithTitle, WithCustomSta
                 $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
                 $drawing->setName('Logo');
                 $drawing->setDescription('Logo');
-                $drawing->setPath(public_path('storage/upload/logo/' . $profile->village_logo));
+                $drawing->setPath(asset('storage/upload/logo/' . $profile->village_logo));
                 $drawing->setHeight(90);
                 $drawing->setCoordinates('D2');
                 $drawing->setWorksheet($event->sheet->getDelegate());
