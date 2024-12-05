@@ -37,6 +37,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::get('export/recipient', [App\Http\Controllers\Admin\RecipientController::class, 'export'])->name('export.recipient');
     Route::put('reset/recipient/{recipient}', [App\Http\Controllers\Admin\RecipientController::class, 'reset'])->name('reset.recipient');
 
+    // Recipient Log
+    Route::get('log/recipient', [App\Http\Controllers\Admin\RecipientLogController::class, 'index'])->name('log.recipient');
+    Route::get('log/export', [App\Http\Controllers\Admin\RecipientLogController::class, 'export'])->name('log.export');
+
     // Profile
     Route::resource('profile', App\Http\Controllers\Admin\ProfileController::class);
 

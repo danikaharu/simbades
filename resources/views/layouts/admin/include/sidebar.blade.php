@@ -82,11 +82,24 @@
         @endcan
 
         @can('view recipient')
-            <li class="menu-item {{ request()->is('admin/recipient', 'admin/recipient/*') ? ' active' : '' }}">
-                <a href="{{ route('admin.recipient.index') }}" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-category"></i>
-                    <div class="text-truncate">Penerimaan Bantuan</div>
+            <li
+                class="menu-item {{ request()->is('admin/recipient', 'admin/recipient/*', 'admin/log/recipient') ? ' active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons tf-icons bx bx bx-category"></i>
+                    <div class="text-truncate" data-i18n="KPM">KPM</div>
                 </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ request()->is('admin/recipient', 'admin/recipient/*') ? ' active' : '' }}">
+                        <a href="{{ route('admin.recipient.index') }}" class="menu-link">
+                            <div class="text-truncate" data-i18n="Nama KPM">Nama KPM</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ request()->is('admin/log/recipient') ? ' active' : '' }}">
+                        <a href="{{ route('admin.log.recipient') }}" class="menu-link">
+                            <div class="text-truncate" data-i18n="Penerimaan Bantuan">Penerimaan Bantuan</div>
+                        </a>
+                    </li>
+                </ul>
             </li>
         @endcan
 

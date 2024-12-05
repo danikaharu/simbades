@@ -21,6 +21,11 @@ class Recipient extends Model
         return $this->belongsTo(DetailAssistance::class);
     }
 
+    public function logs()
+    {
+        return $this->hasMany(RecipientLog::class, 'recipient_id');
+    }
+
     public function status()
     {
         if ($this->status == 0) {

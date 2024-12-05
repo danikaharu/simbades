@@ -1,6 +1,6 @@
 @extends('layouts.admin.index')
 
-@section('title', 'Penerimaan Bantuan')
+@section('title', 'Nama KPM')
 
 @push('style')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
@@ -25,19 +25,19 @@
         <!-- Responsive Table -->
         <div class="card">
             <div class="card-header">
-                <h5>Data Penerimaan Bantuan</h5>
+                <h5>Data Nama KPM</h5>
                 @can('create recipient')
                     <div class="btn-group">
                         <a class="btn btn-primary" href="{{ route('admin.recipient.create') }}"><i
                                 class="bx bx-plus me-1"></i>Input Data
-                            Penerimaan Bantuan</a>
+                            Nama KPM</a>
                     </div>
                 @endcan
                 @can('export recipient')
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exportModal"><i
                                 class="bx bxs-printer"></i>
-                            Cetak Data
+                            Cetak
                         </button>
 
                         <!-- Modal -->
@@ -86,10 +86,8 @@
                         <tr class="text-nowrap">
                             <th>#</th>
                             <th>Nama</th>
+                            <th>Alamat</th>
                             <th>Bantuan</th>
-                            <th>Tahun</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                 </table>
@@ -121,44 +119,14 @@
                 },
                 ajax: '{{ url()->current() }}',
                 columns: [{
-                        data: 'DT_RowIndex'
-                    }, {
-                        data: 'person',
-                    }, {
-                        data: 'assistance',
-                    },
-                    {
-                        data: 'year',
-                    },
-                    {
-                        data: 'status',
-                    },
-                    {
-                        data: 'action',
-                        orderable: false,
-                        searchable: false
-                    },
-                ],
-            });
-
-            // Sweet Alert Delete
-            $("body").on('submit', `form[role='alert']`, function(event) {
-                event.preventDefault();
-
-                Swal.fire({
-                    title: $(this).attr('alert-title'),
-                    text: $(this).attr('alert-text'),
-                    icon: "warning",
-                    allowOutsideClick: false,
-                    showCancelButton: true,
-                    cancelButtonText: "Batal",
-                    reverseButton: true,
-                    confirmButtonText: "Hapus",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        event.target.submit();
-                    }
-                })
+                    data: 'DT_RowIndex'
+                }, {
+                    data: 'person',
+                }, {
+                    data: 'address',
+                }, {
+                    data: 'assistance',
+                }, ],
             });
         });
     </script>

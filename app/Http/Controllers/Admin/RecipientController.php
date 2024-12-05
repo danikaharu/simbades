@@ -62,11 +62,11 @@ class RecipientController extends Controller implements HasMiddleware
                 ->addColumn('person', function ($row) {
                     return $row->person ? $row->person->name : '-';
                 })
+                ->addColumn('address', function ($row) {
+                    return $row->person ? $row->person->village->name : '-';
+                })
                 ->addColumn('assistance', function ($row) {
                     return $row->detailAssistance ? $row->detailAssistance->assistance->name : '-';
-                })
-                ->addColumn('status', function ($row) {
-                    return $row->status();
                 })
                 ->addColumn('action', 'admin.recipient.include.action')
                 ->rawColumns(['action'])
