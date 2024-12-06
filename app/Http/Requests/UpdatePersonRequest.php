@@ -23,8 +23,8 @@ class UpdatePersonRequest extends FormRequest
     {
         return [
             'village_id' => ['required', 'exists:villages,id'],
-            'family_card' => ['required', 'numeric', 'max_digits:16'],
-            'identification_number' => ['required', 'numeric', 'max_digits:16'],
+            'family_card' => ['required', 'numeric', 'digits:16'],
+            'identification_number' => ['required', 'numeric', 'digits:16'],
             'name' => ['required', 'string', 'max:255'],
             'gender' => ['required', 'in:1,2'],
             'birth_place' => ['required', 'string', 'max:255'],
