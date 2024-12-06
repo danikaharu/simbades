@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exports\AssistanceExport;
-use App\Exports\DetailAssistanceExport;
 use App\Http\Controllers\Controller;
 use App\Models\Assistance;
 use App\Models\DetailAssistance;
