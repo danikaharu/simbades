@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 
 class StoreRecipientRequest extends FormRequest
 {
@@ -32,7 +33,22 @@ class StoreRecipientRequest extends FormRequest
             'person_id' => ['required', 'exists:persons,id'],
             'detail_assistance_id' => ['required', 'exists:detail_assistances,id'],
             'year' => ['required', 'integer'],
-            'status' => ['in:0']
+            'status' => ['in:0'],
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $exists = DB::table('recipients')
+                ->where('year', $this->year)
+                ->where('person_id', $this->person_id)
+                ->where('detail_assistance_id', $this->detail_assistance_id)
+                ->exists();
+
+            if ($exists) {
+                $validator->errors()->add('detail_assistance_id', 'Masyarakat sudah terdaftar di bantuan ini');
+            }
+        });
     }
 }
