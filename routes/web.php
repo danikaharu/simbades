@@ -41,6 +41,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::get('log/recipient', [App\Http\Controllers\Admin\RecipientLogController::class, 'index'])->name('log.recipient');
     Route::get('log/export', [App\Http\Controllers\Admin\RecipientLogController::class, 'export'])->name('log.export');
 
+    // Information
+    Route::resource('information', App\Http\Controllers\Admin\InformationController::class);
+
     // Profile
     Route::resource('profile', App\Http\Controllers\Admin\ProfileController::class);
 

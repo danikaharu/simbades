@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Assistance;
+use App\Models\Information;
 use App\Models\Person;
 
 class DashboardController extends Controller
@@ -25,7 +26,8 @@ class DashboardController extends Controller
                     'recipient_count' => $recipientCount,
                 ];
             });
+        $information = Information::first();
 
-        return view('admin.dashboard.index', compact('totalMale', 'totalFemale', 'totalPerson', 'assistanceCounts'));
+        return view('admin.dashboard.index', compact('information', 'totalMale', 'totalFemale', 'totalPerson', 'assistanceCounts'));
     }
 }

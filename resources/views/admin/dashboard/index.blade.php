@@ -34,6 +34,22 @@
                                     <span class="avatar-initial rounded bg-label-primary"><i
                                             class="bx bxs-user-pin bx-lg"></i></span>
                                 </div>
+                                <h4 class="mb-0">Waktu dan Lokasi</h4>
+                            </div>
+                            <p class="mb-2">
+                                {!! $information->description !!}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-2">
+                    <div class="card card-border-shadow-primary h-100 ">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="avatar me-4">
+                                    <span class="avatar-initial rounded bg-label-primary"><i
+                                            class="bx bxs-user-pin bx-lg"></i></span>
+                                </div>
                                 <h4 class="mb-0">Tata Cara Pengambilan</h4>
                             </div>
                             <ol>
@@ -48,20 +64,6 @@
                                 </li>
                                 <li>Tunggu beberapa saat hingga pemindaian selesai</li>
                             </ol>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 mb-2">
-                    <div class="card card-border-shadow-primary h-100 ">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="avatar me-4">
-                                    <span class="avatar-initial rounded bg-label-primary"><i
-                                            class="bx bxs-user-pin bx-lg"></i></span>
-                                </div>
-                                <h4 class="mb-0">Waktu dan Lokasi</h4>
-                            </div>
-                            <p class="mb-2">Dinamis</p>
                         </div>
                     </div>
                 </div>

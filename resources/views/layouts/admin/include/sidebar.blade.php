@@ -113,6 +113,13 @@
                     <div class="text-truncate">Profil Website</div>
                 </a>
             </li>
+
+            <li class="menu-item {{ request()->is('admin/information') ? ' active' : '' }}">
+                <a href="{{ route('admin.information.edit', $information->id) }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-clipboard"></i>
+                    <div class="text-truncate">Informasi</div>
+                </a>
+            </li>
         @endcan
 
         @can('view user')

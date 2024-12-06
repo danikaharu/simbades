@@ -27,10 +27,13 @@ class ViewServiceProvider extends ServiceProvider
         View::composer([
             'layouts.admin.include.sidebar',
         ], function ($view) {
-            return $view->with(
-                'profile',
-                \App\Models\Profile::first()
-            );
+            $profile = \App\Models\Profile::first();
+            $information = \App\Models\Information::first();
+
+            return $view->with([
+                'profile' => $profile,
+                'information' => $information,
+            ]);
         });
     }
 }
