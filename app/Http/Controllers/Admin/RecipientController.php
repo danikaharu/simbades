@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Recipient;
 use App\Http\Requests\StoreRecipientRequest;
 use App\Http\Requests\UpdateRecipientRequest;
-use App\Models\DetailAssistance;
+use App\Models\Assistance;
 use App\Models\Person;
 use App\Models\Profile;
 use Carbon\Carbon;
@@ -66,7 +66,7 @@ class RecipientController extends Controller implements HasMiddleware
                     return $row->person ? $row->person->village->name : '-';
                 })
                 ->addColumn('assistance', function ($row) {
-                    return $row->detailAssistance ? $row->detailAssistance->assistance->name : '-';
+                    return $row->assistance ? $row->assistance->name : '-';
                 })
                 ->addColumn('action', 'admin.recipient.include.action')
                 ->rawColumns(['action'])
@@ -82,8 +82,8 @@ class RecipientController extends Controller implements HasMiddleware
     public function create()
     {
         $persons = Person::latest()->get();
-        $detailAssistances = DetailAssistance::latest()->get();
-        return view('admin.recipient.create', compact('persons', 'detailAssistances'));
+        $assistances = Assistance::latest()->get();
+        return view('admin.recipient.create', compact('persons', 'assistances'));
     }
 
     /**
@@ -151,9 +151,7 @@ class RecipientController extends Controller implements HasMiddleware
 
         $qrData = json_encode([
             'nama' => $recipient->person->name,
-            'bantuan' => $recipient->detailAssistance->assistance->name,
-            'jenis bantuan' => $recipient->detailAssistance->type(),
-            'keterangan' => $recipient->detailAssistance->additional_data,
+            'bantuan' => $recipient->assistance->name,
             'waktu kadaluarsa' => $expiration->toDateTimeString()
         ]);
 

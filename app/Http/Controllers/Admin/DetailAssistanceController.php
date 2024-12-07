@@ -84,7 +84,16 @@ class DetailAssistanceController extends Controller implements HasMiddleware
      */
     public function show(DetailAssistance $detailAssistance)
     {
-        //
+        $data = json_decode($detailAssistance['additional_data'], true);
+
+        // Proses array menjadi string (contoh untuk warna)
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[$key] = implode(', ', $value);
+            }
+        }
+
+        return view('admin.detail_assistance.show', compact('detailAssistance', 'data'));
     }
 
     /**

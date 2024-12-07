@@ -31,7 +31,7 @@ class StoreRecipientRequest extends FormRequest
     {
         return [
             'person_id' => ['required', 'exists:persons,id'],
-            'detail_assistance_id' => ['required', 'exists:detail_assistances,id'],
+            'assistance_id' => ['required', 'exists:assistances,id'],
             'year' => ['required', 'integer'],
             'status' => ['in:0'],
         ];
@@ -43,11 +43,11 @@ class StoreRecipientRequest extends FormRequest
             $exists = DB::table('recipients')
                 ->where('year', $this->year)
                 ->where('person_id', $this->person_id)
-                ->where('detail_assistance_id', $this->detail_assistance_id)
+                ->where('assistance_id', $this->assistance_id)
                 ->exists();
 
             if ($exists) {
-                $validator->errors()->add('detail_assistance_id', 'Masyarakat sudah terdaftar di bantuan ini');
+                $validator->errors()->add('assistance_id', 'Masyarakat sudah terdaftar di bantuan ini');
             }
         });
     }

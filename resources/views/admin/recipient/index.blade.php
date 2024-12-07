@@ -88,6 +88,7 @@
                             <th>Nama</th>
                             <th>Alamat</th>
                             <th>Bantuan</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                 </table>
@@ -126,6 +127,10 @@
                     data: 'address',
                 }, {
                     data: 'assistance',
+                }, {
+                    data: 'action',
+                    orderable: false,
+                    searchable: false,
                 }, ],
             });
         });

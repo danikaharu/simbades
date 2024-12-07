@@ -33,11 +33,6 @@ class Person extends Model
         return $this->belongsTo(Village::class);
     }
 
-    // public function work()
-    // {
-    //     return $this->belongsTo(Work::class);
-    // }
-
     public function houseCondition()
     {
         return $this->hasOne(HouseCondition::class, 'person_id');

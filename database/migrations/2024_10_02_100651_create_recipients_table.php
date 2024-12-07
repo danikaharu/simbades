@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('recipients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('person_id');
-            $table->foreignId('detail_assistance_id');
+            $table->foreignId('assistance_id');
             $table->string('year');
             $table->tinyInteger('status');
             $table->text('qr_data')->nullable();

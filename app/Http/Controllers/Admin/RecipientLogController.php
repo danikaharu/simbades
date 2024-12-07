@@ -20,9 +20,9 @@ class RecipientLogController extends Controller
     {
         $userInfo = Person::where('identification_number', Auth::user()->username)->first();
 
-        $recipientQuery = RecipientLog::query()
-            ->with(['recipient.person', 'recipient.detailAssistance.assistance']) // Eager loading relasi
-            ->latest(); // Urutkan berdasarkan data terbaru
+        $recipientQuery = Recipient::query()
+            ->with(['person', 'assistance'])
+            ->latest();
 
 
         if (Auth::user()->roles->first()->id == 2) {
@@ -33,7 +33,7 @@ class RecipientLogController extends Controller
         }
 
         // Eksekusi query dan dapatkan hasilnya
-        $recipients = $recipientQuery->get();
+        $recipients = $recipientQuery->whereIn('assistance_id', [2, 4, 5])->get();
 
         $assistances = Assistance::latest()->get();
 
@@ -41,10 +41,10 @@ class RecipientLogController extends Controller
             return DataTables::of($recipients)
                 ->addIndexColumn()
                 ->addColumn('person', function ($row) {
-                    return $row->recipient->person ? $row->recipient->person->name : '-';
+                    return $row->person ? $row->person->name : '-';
                 })
                 ->addColumn('assistance', function ($row) {
-                    return $row->recipient->detailAssistance ? $row->recipient->detailAssistance->assistance->name : '-';
+                    return $row->assistance ? $row->assistance->name : '-';
                 })
                 ->addColumn('period', function ($row) {
                     return Carbon::parse($row->log_date)->translatedFormat('F Y');
@@ -52,12 +52,12 @@ class RecipientLogController extends Controller
                 ->addColumn('status', function ($row) {
                     return $row->status();
                 })
-                ->addColumn('action', 'admin.recipient.include.action')
+                ->addColumn('action', 'admin.recipient_log.include.action')
                 ->rawColumns(['action'])
                 ->make(true);
         }
 
-        return view('admin.recipient.log', compact('assistances'));
+        return view('admin.recipient_log.index', compact('assistances'));
     }
 
     public function export(Request $request)
@@ -75,13 +75,13 @@ class RecipientLogController extends Controller
 
         $logs = RecipientLog::whereMonth('log_date', $month)
             ->whereYear('log_date', $year)
-            ->whereHas('recipient.detailAssistance.assistance', function ($query) use ($assistance_id) {
+            ->whereHas('recipient.assistance', function ($query) use ($assistance_id) {
                 $query->where('id', $assistance_id);
             })
-            ->with('recipient.detailAssistance.assistance')
+            ->with('recipient.assistance')
             ->get();
 
-        $pdf = Pdf::loadView('admin.recipient.report.log', compact('assistance_name', 'month_name', 'logs', 'year'))
+        $pdf = Pdf::loadView('admin.recipient_log.report', compact('assistance_name', 'month_name', 'logs', 'year'))
             ->setPaper('A3', 'landscape');
 
         if ($assistance_id && $month && $year) {

@@ -16,11 +16,6 @@ class DetailAssistance extends Model
         return $this->belongsTo(Assistance::class, 'assistance_id');
     }
 
-    public function recipient()
-    {
-        return $this->hasMany(Recipient::class);
-    }
-
     public function type()
     {
         if ($this->type == 1) {

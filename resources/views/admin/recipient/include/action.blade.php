@@ -1,28 +1,5 @@
 <div class="d-flex">
 
-    @if ($status == 0)
-        @can('barcode recipient')
-            <a class="btn btn-info me-2" href="{{ route('admin.qr-code.barcode', $id) }}"><i class="bx bx-qr me-1"></i>
-                Cetak QR Code</a>
-        @endcan
-
-        @can('verification recipient')
-            <a class="btn btn-info me-2" href="{{ route('admin.qr-code.scan') }}"><i class="bx bx-scan me-1"></i>
-                Verifikasi QR Code</a>
-        @endcan
-    @endif
-
-    @if ($status == 1)
-        @can('reset status recipient')
-            <form action="{{ route('admin.reset.recipient', $id) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <button type="submit" class="btn btn-info me-2"><i class="bx bx-reset">Reset Status Penerima</i>
-                </button>
-            </form>
-        @endcan
-    @endif
-
     @can('delete recipient')
         <form action="{{ route('admin.recipient.destroy', $id) }}" method="POST" role="alert" alert-title="Hapus Data"
             alert-text="Yakin ingin menghapusnya?">

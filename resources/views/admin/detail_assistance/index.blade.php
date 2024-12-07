@@ -34,14 +34,6 @@
                     </div>
                 @endcan
 
-                @can('export detail assistance')
-                    <div class="btn-group">
-                        <a class="btn btn-primary" href="{{ route('admin.export.assistance') }}"><i
-                                class="bx bxs-printer me-1"></i>Cetak Data
-                            Bantuan</a>
-                    </div>
-                @endcan
-
             </div>
             <div class="table-responsive text-nowrap">
                 <table class="table" id="listData">
