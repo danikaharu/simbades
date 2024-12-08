@@ -10,7 +10,6 @@ use App\Http\Requests\UpdatePersonRequest;
 use App\Models\HouseCondition;
 use App\Models\User;
 use App\Models\Village;
-use App\Models\Work;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
@@ -49,9 +48,6 @@ class PersonController extends Controller implements HasMiddleware
                 ->addColumn('village', function ($row) {
                     return $row->village ? $row->village->name : '-';
                 })
-                // ->addColumn('work', function ($row) {
-                //     return $row->work ? $row->work->name : '-';
-                // })
                 ->addColumn('action', 'admin.person.include.action')
                 ->rawColumns(['action'])
                 ->make(true);
@@ -66,7 +62,6 @@ class PersonController extends Controller implements HasMiddleware
     public function create()
     {
         $villages = Village::latest()->get();
-        // $works = Work::latest()->get();
         return view('admin.person.create', compact('villages'));
     }
 
@@ -128,7 +123,6 @@ class PersonController extends Controller implements HasMiddleware
     public function edit(Person $person)
     {
         $villages = Village::latest()->get();
-        // $works = Work::latest()->get();
         return view('admin.person.edit', compact('person', 'villages'));
     }
 
@@ -200,6 +194,20 @@ class PersonController extends Controller implements HasMiddleware
                 ->route('admin.person.index')
                 ->with('error', __($th->getMessage()));
         }
+    }
+
+    public function previewAll()
+    {
+        $persons = Person::latest()->get();
+        return view('admin.person.preview.all', compact('persons'));
+    }
+
+    public function previewLowIncome()
+    {
+        $persons = Person::where('income_month', '<=', 500000)
+            ->where('kinship', 1)
+            ->get();
+        return view('admin.person.preview.low_income', compact('persons'));
     }
 
     public function exportAll()

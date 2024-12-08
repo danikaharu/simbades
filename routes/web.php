@@ -25,6 +25,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
     // Person
     Route::resource('person', App\Http\Controllers\Admin\PersonController::class);
+    Route::get('preview/person', [App\Http\Controllers\Admin\PersonController::class, 'previewAll'])->name('preview.all');
+    Route::get('preview/low-income', [App\Http\Controllers\Admin\PersonController::class, 'previewLowIncome'])->name('preview.low_income');
     Route::get('export/person', [App\Http\Controllers\Admin\PersonController::class, 'exportAll'])->name('export.all');
     Route::get('export/low-income', [App\Http\Controllers\Admin\PersonController::class, 'exportLowIncome'])->name('export.low_income');
 

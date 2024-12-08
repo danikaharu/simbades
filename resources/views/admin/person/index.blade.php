@@ -42,8 +42,8 @@
                                 Cetak Data
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('admin.export.all') }}">Semua Masyarakat</a></li>
-                                <li><a class="dropdown-item" href="{{ route('admin.export.low_income') }}">Masyarakat Kurang
+                                <li><a class="dropdown-item" href="{{ route('admin.preview.all') }}">Semua Masyarakat</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.preview.low_income') }}">Masyarakat Kurang
                                         Mampu</a></li>
                             </ul>
                         </div>
