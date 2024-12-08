@@ -15,4 +15,9 @@ class Assistance extends Model
     {
         return $this->hasMany(DetailAssistance::class);
     }
+
+    public function recipients()
+    {
+        return $this->hasMany(Recipient::class);
+    }
 }

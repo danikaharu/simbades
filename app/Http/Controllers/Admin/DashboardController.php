@@ -14,16 +14,12 @@ class DashboardController extends Controller
         $totalMale = Person::where('gender', 1)->count();
         $totalFemale = Person::where('gender', 2)->count();
         $totalPerson = Person::count();
-        $assistanceCounts = Assistance::with('detailAssistance.recipient')
+        $assistanceCounts = Assistance::with('recipients') // Eager load recipients
             ->get()
             ->map(function ($assistance) {
-                $recipientCount = $assistance->detailAssistance->sum(function ($detail) {
-                    return $detail->recipient->count();
-                });
-
                 return [
-                    'name' => $assistance->name,
-                    'recipient_count' => $recipientCount,
+                    'name' => $assistance->name, // Nama bantuan
+                    'recipient_count' => $assistance->recipients->count(), // Jumlah penerima
                 ];
             });
         $information = Information::first();
