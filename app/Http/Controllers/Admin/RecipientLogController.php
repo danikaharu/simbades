@@ -27,7 +27,7 @@ class RecipientLogController extends Controller
 
         if (Auth::user()->roles->first()->id == 2) {
             // Jika user role adalah 2, filter berdasarkan identification_number
-            $recipientQuery->whereHas('recipient.person', function ($query) use ($userInfo) {
+            $recipientQuery->whereHas('person', function ($query) use ($userInfo) {
                 $query->where('identification_number', $userInfo->identification_number);
             });
         }

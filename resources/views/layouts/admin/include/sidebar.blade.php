@@ -89,11 +89,13 @@
                     <div class="text-truncate" data-i18n="KPM">KPM</div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item {{ request()->is('admin/recipient', 'admin/recipient/*') ? ' active' : '' }}">
-                        <a href="{{ route('admin.recipient.index') }}" class="menu-link">
-                            <div class="text-truncate" data-i18n="Nama KPM">Nama KPM</div>
-                        </a>
-                    </li>
+                    @hasanyrole('Super Admin|Kasi Kesejahteraan|Kepala Desa')
+                        <li class="menu-item {{ request()->is('admin/recipient', 'admin/recipient/*') ? ' active' : '' }}">
+                            <a href="{{ route('admin.recipient.index') }}" class="menu-link">
+                                <div class="text-truncate" data-i18n="Nama KPM">Nama KPM</div>
+                            </a>
+                        </li>
+                    @endhasanyrole
                     <li class="menu-item {{ request()->is('admin/log/recipient') ? ' active' : '' }}">
                         <a href="{{ route('admin.log.recipient') }}" class="menu-link">
                             <div class="text-truncate" data-i18n="Penerimaan Bantuan">Penerimaan Bantuan</div>
