@@ -35,8 +35,8 @@ class DashboardController extends Controller
 
         // Filter berdasarkan assistance_id jika ada
         if (!empty($assistanceId)) {
-            $results->whereHas('detailAssistance', function ($query) use ($assistanceId) {
-                $query->where('assistance_id', 'LIKE', '%' . $assistanceId . '%');
+            $results->whereHas('assistance', function ($query) use ($assistanceId) {
+                $query->where('id', 'LIKE', '%' . $assistanceId . '%');
             });
         }
 
