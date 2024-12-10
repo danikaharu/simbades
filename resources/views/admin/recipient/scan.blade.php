@@ -95,7 +95,7 @@
                                 text: 'QR Code berhasil diverifikasi!'
                             }).then(() => {
                                 window.location.href =
-                                    '{{ route('admin.recipient.index') }}';
+                                    '{{ route('admin.log.recipient') }}';
                             });
                         });
                     } else {
