@@ -17,10 +17,18 @@
                        <span>Beranda</span>
                        <i class="fa fa-home" aria-hidden="true"></i>
                    </a>
-                   <a href="{{ route('login') }}">
-                       <span>Login</span>
-                       <i class="fa fa-user" aria-hidden="true"></i>
-                   </a>
+                   @auth()
+                       <a href="{{ route('admin.dashboard') }}">
+                           <span>Panel Admin</span>
+                           <i class="fa fa-user" aria-hidden="true"></i>
+                       </a>
+                   @else
+                       <a href="{{ route('login') }}">
+                           <span>Login</span>
+                           <i class="fa fa-user" aria-hidden="true"></i>
+                       </a>
+                   @endauth
+
                </div>
            </div>
        </nav>
