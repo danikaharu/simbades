@@ -75,7 +75,7 @@
                         if (status === 1) {
                             clearInterval(transactionStatusInterval);
                             alert('Transaksi berhasil!');
-                            window.location.href = '/admin/recipient';
+                            window.location.href = '/admin/log/recipient';
                         }
                     })
                     .catch(error => {
