@@ -77,43 +77,53 @@
         }
 
         function onScanSuccess(decodedText, decodedResult) {
-            $.ajax({
-                url: '/admin/qr-code/verification',
-                method: 'POST',
-                data: {
-                    code: decodedText,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    if (response.status === 'success') {
-                        axios.post('/admin/qr-code/scanned', {
-                            code: decodedText
-                        }).then(() => {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Verifikasi QR Code',
-                                text: 'QR Code berhasil diverifikasi!'
-                            }).then(() => {
-                                window.location.href =
-                                    '{{ route('admin.log.recipient') }}';
+            try {
+                $.ajax({
+                    url: '/admin/qr-code/verification',
+                    method: 'POST',
+                    data: {
+                        code: decodedText,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            $.ajax({
+                                url: '/admin/qr-code/scanned',
+                                method: 'POST',
+                                data: {
+                                    code: decodedText
+                                },
+                                success: function() {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Verifikasi QR Code',
+                                        text: 'QR Code berhasil diverifikasi!'
+                                    }).then(() => {
+                                        window.location.href =
+                                            '{{ route('admin.log.recipient') }}';
+                                    });
+                                }
                             });
-                        });
-                    } else {
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: response.message
+                            });
+                        }
+                    },
+                    error: function(xhr) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Gagal',
-                            text: response.message
+                            text: xhr.responseJSON.message || 'Terjadi kesalahan!'
                         });
                     }
-                },
-                error: function(xhr) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal',
-                        text: xhr.responseJSON.message || 'Terjadi kesalahan!'
-                    });
-                }
-            });
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+
 
             stopScanner();
         }
