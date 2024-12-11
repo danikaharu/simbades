@@ -234,11 +234,11 @@ class RecipientController extends Controller implements HasMiddleware
             );
 
             return redirect()
-                ->route('admin.recipient.index')
+                ->route('admin.log.recipient')
                 ->with('success', __('Status Berhasil di Reset'));
         } catch (\Throwable $th) {
             return redirect()
-                ->route('admin.recipient.index')
+                ->route('admin.log.recipient')
                 ->with('error', __($th->getMessage()));
         }
     }
