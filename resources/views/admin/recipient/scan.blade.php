@@ -93,7 +93,8 @@
                                 url: '/admin/qr-code/scanned/' + idPenerima,
                                 method: 'POST',
                                 data: {
-                                    code: decodedText
+                                    code: decodedText,
+                                    _token: '{{ csrf_token() }}'
                                 },
                                 success: function() {
                                     Swal.fire({
