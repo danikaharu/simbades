@@ -86,9 +86,11 @@
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
+                        let jsonData = JSON.parse(code);
+                        let idPenerima = jsonData["id penerima"];
                         if (response.status === 'success') {
                             $.ajax({
-                                url: '/admin/qr-code/scanned',
+                                url: '/admin/qr-code/scanned/{idPenerima}',
                                 method: 'POST',
                                 data: {
                                     code: decodedText

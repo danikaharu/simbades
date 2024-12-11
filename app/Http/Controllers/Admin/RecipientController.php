@@ -150,6 +150,7 @@ class RecipientController extends Controller implements HasMiddleware
         $expiration = Carbon::now()->addMinute(5);
 
         $qrData = json_encode([
+            'id penerima' => $recipient->id,
             'nama' => $recipient->person->name,
             'bantuan' => $recipient->assistance->name,
             'waktu kadaluarsa' => $expiration->toDateTimeString()
