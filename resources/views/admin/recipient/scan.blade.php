@@ -91,10 +91,9 @@
                         if (response.status === 'success') {
                             $.ajax({
                                 url: '/admin/qr-code/scanned/' + idPenerima,
-                                method: 'POST',
+                                method: 'GET',
                                 data: {
                                     code: decodedText,
-                                    _token: '{{ csrf_token() }}'
                                 },
                                 success: function() {
                                     Swal.fire({
