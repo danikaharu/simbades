@@ -88,10 +88,9 @@
                     success: function(response) {
                         let jsonData = JSON.parse(decodedText);
                         let idPenerima = jsonData["id penerima"];
-                        console.log(idPenerima);
                         if (response.status === 'success') {
                             $.ajax({
-                                url: '/admin/qr-code/scanned/{idPenerima}',
+                                url: '/admin/qr-code/scanned/' + idPenerima,
                                 method: 'POST',
                                 data: {
                                     code: decodedText
