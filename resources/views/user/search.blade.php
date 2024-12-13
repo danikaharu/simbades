@@ -17,7 +17,6 @@
                             <th scope="col">PEKERJAAN</th>
                             <th scope="col">ALAMAT</th>
                             <th scope="col">BANTUAN</th>
-                            <th scope="col">STATUS</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,8 +27,7 @@
                                 <td>{{ $data->person->name }}</td>
                                 <td>{{ $data->person->work }}</td>
                                 <td>{{ $data->person->village->name ?? '-' }}</td>
-                                <td>{{ $data->detailAssistance?->assistance?->name ?? '-' }}</td>
-                                <td>{{ $data->status() }}</td>
+                                <td>{{ $data->assistance?->name ?? '-' }}</td>
                             </tr>
                         @endforeach
                     </tbody>

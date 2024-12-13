@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 
 class StoreDetailAssistanceRequest extends FormRequest
 {
@@ -31,5 +32,19 @@ class StoreDetailAssistanceRequest extends FormRequest
             'additional_data.jumlah_barang' => 'required_if:type,2|array',
             'additional_data.jumlah_barang.*' => 'required_if:type,2', // Validasi untuk setiap jumlah barang
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $exists = DB::table('detail_assistances')
+                ->where('assistance_id', $this->assistance_id)
+                ->where('input_date', $this->input_date)
+                ->exists();
+
+            if ($exists) {
+                $validator->errors()->add('input_date', 'Bantuan ini sudah terdaftar di tanggal yang dipilih');
+            }
+        });
     }
 }
