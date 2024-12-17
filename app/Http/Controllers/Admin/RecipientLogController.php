@@ -35,7 +35,7 @@ class RecipientLogController extends Controller
         // Eksekusi query dan dapatkan hasilnya
         $recipients = $recipientQuery->whereIn('assistance_id', [2, 4, 5])->get();
 
-        $assistances = Assistance::latest()->get();
+        $assistances = Assistance::whereIn('id', [2, 4, 5])->latest()->get();
 
         if (request()->ajax()) {
             return DataTables::of($recipients)
