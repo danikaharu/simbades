@@ -28,11 +28,10 @@ class ResetMonthlyStatus extends Command
      */
     public function handle()
     {
-        // Daftar detail_assistance_id yang perlu direset
-        $detailAssistanceIds = [12]; // Ganti dengan ID yang sesuai
+        $assistanceIds = [2, 4, 5]; // Ganti dengan ID yang sesuai
 
         // Ambil semua data yang akan di-reset
-        $recipients = Recipient::whereIn('detail_assistance_id', $detailAssistanceIds)->get();
+        $recipients = Recipient::whereIn('assistance_id', $assistanceIds)->get();
 
         // Simpan data lama ke tabel log
         foreach ($recipients as $recipient) {
@@ -44,9 +43,11 @@ class ResetMonthlyStatus extends Command
         }
 
         // Reset status
-        Recipient::whereIn('detail_assistance_id', $detailAssistanceIds)
+        Recipient::whereIn('assistance_id', $assistanceIds)
             ->update(['status' => 0]);
 
         $this->info('Monthly status reset completed successfully. Data has been logged.');
+
+        \Log::info("Cron Job berhasil berjalan");
     }
 }
