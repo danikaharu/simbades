@@ -38,7 +38,7 @@ class ResetMonthlyStatus extends Command
             RecipientLog::create([
                 'recipient_id' => $recipient->id,
                 'status'       => $recipient->status,
-                'log_date'     => Carbon::now()->toDateString(),
+                'log_date'     => Carbon::now()->subDays(1)->toDateString(),
             ]);
         }
 
